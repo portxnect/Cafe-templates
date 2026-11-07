@@ -192,7 +192,7 @@
   </style>
 </head>
 
-<body class="bg-roast-yellow text-roast-dark font-sans antialiased selection:bg-roast-dark selection:text-roast-yellow">
+<body class="bg-roast-yellow text-roast-dark font-sans antialiased selection:bg-roast-dark selection:text-roast-yellow overflow-x-hidden">
 
   <!-- =========================================================
        UNIVERSAL TEMPLATE SUITE TOP BAR
@@ -269,7 +269,7 @@
   <!-- =========================================================
        SECTION 1: HERO (Warm Golden Amber & SPECIAL COFFEE Typography)
        ========================================================= -->
-  <header class="w-full pt-4 pb-2 px-6 border-b border-roast-dark/10">
+  <header id="mainHeader" class="w-full pt-4 pb-2 px-6 border-b border-roast-dark/10 sticky top-0 z-40 bg-roast-yellow/95 backdrop-blur-md transition-all duration-300">
     <div class="max-w-6xl mx-auto flex items-center justify-between">
       <!-- LOGO -->
       <a href="#" class="font-display text-2xl sm:text-3xl font-black uppercase tracking-wider text-roast-dark" data-cursor="link">
@@ -286,9 +286,35 @@
       </nav>
 
       <!-- Right CTAs -->
-      <div class="flex items-center space-x-4">
-        <a href="#contact" class="hidden sm:inline-flex px-6 py-2.5 bg-roast-dark text-roast-yellow font-bold text-xs uppercase tracking-wider rounded-full hover:bg-roast-espresso transition shadow-md" data-cursor="book">
+      <div class="flex items-center space-x-3">
+        <a href="#contact" class="px-5 sm:px-6 py-2.5 bg-roast-dark text-roast-yellow font-bold text-xs uppercase tracking-wider rounded-full hover:bg-roast-espresso transition shadow-md" data-cursor="book">
           Order Online
+        </a>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="mobileNavToggle" type="button" class="md:hidden p-2 rounded-xl border border-roast-dark/30 text-roast-dark hover:bg-roast-dark/10 transition focus:outline-none" aria-label="Toggle navigation">
+          <svg id="hamburgerIcon" class="w-5 h-5 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="closeIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobileDrawer" class="hidden md:hidden border-t border-roast-dark/15 px-6 py-4 space-y-3 bg-roast-yellow/98 text-roast-dark transition-all duration-300">
+      <nav class="flex flex-col space-y-2 font-display uppercase tracking-wider text-sm font-bold">
+        <a href="#hero" class="mobile-nav-link py-2 border-b border-roast-dark/10">Home</a>
+        <a href="#who-we-are" class="mobile-nav-link py-2 border-b border-roast-dark/10">About Us</a>
+        <a href="#service" class="mobile-nav-link py-2 border-b border-roast-dark/10">Service</a>
+        <a href="#products" class="mobile-nav-link py-2 border-b border-roast-dark/10">Signature Products</a>
+        <a href="#contact" class="mobile-nav-link py-2">Contact & Order</a>
+      </nav>
+      <div class="pt-2">
+        <a href="#contact" class="mobile-nav-link block text-center py-3 bg-roast-dark text-roast-yellow text-xs font-bold uppercase tracking-wider rounded-full shadow-md">
+          Order Now ➔
         </a>
       </div>
     </div>
@@ -679,9 +705,37 @@
   <!-- JavaScript -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      initMobileNav();
       initTravelingCup();
       initCursorFollow();
     });
+
+    // Mobile Navigation Drawer Toggle
+    function initMobileNav() {
+      const toggleBtn = document.getElementById('mobileNavToggle');
+      const drawer = document.getElementById('mobileDrawer');
+      const hIcon = document.getElementById('hamburgerIcon');
+      const cIcon = document.getElementById('closeIcon');
+      if (toggleBtn && drawer) {
+        toggleBtn.addEventListener('click', () => {
+          const isHidden = drawer.classList.contains('hidden');
+          drawer.classList.toggle('hidden');
+          if (hIcon && cIcon) {
+            hIcon.classList.toggle('hidden', isHidden);
+            cIcon.classList.toggle('hidden', !isHidden);
+          }
+        });
+        drawer.querySelectorAll('.mobile-nav-link').forEach(link => {
+          link.addEventListener('click', () => {
+            drawer.classList.add('hidden');
+            if (hIcon && cIcon) {
+              hIcon.classList.remove('hidden');
+              cIcon.classList.add('hidden');
+            }
+          });
+        });
+      }
+    }
 
     // WhatsApp Submission
     function handleGoldenRoastSubmit(e) {

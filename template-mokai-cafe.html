@@ -53,6 +53,7 @@
       height: 100vh;
       pointer-events: none;
       z-index: 35;
+      overflow: hidden;
     }
     #travelingCupWrapper {
       position: absolute;
@@ -116,7 +117,7 @@
   </style>
 </head>
 
-<body class="bg-mokai-obsidian text-mokai-cream font-sans antialiased selection:bg-mokai-gold selection:text-black">
+<body class="bg-mokai-obsidian text-mokai-cream font-sans antialiased selection:bg-mokai-gold selection:text-black overflow-x-hidden">
 
   <!-- =========================================================
        UNIVERSAL TEMPLATE SUITE TOP BAR
@@ -208,14 +209,40 @@
         <a href="#visit" class="hover:text-mokai-gold transition py-1">Pali Hill Bar</a>
       </nav>
 
-      <!-- Right Action -->
+      <!-- Right Action & Mobile Toggle -->
       <div class="flex items-center space-x-3">
-        <a href="#beans" class="px-5 py-2.5 bg-mokai-gold hover:bg-mokai-goldWarm text-black font-mono text-xs font-bold uppercase tracking-wider rounded-full transition flex items-center gap-1.5 shadow-md shadow-mokai-gold/20">
+        <a href="#beans" class="px-4 sm:px-5 py-2 sm:py-2.5 bg-mokai-gold hover:bg-mokai-goldWarm text-black font-mono text-xs font-bold uppercase tracking-wider rounded-full transition flex items-center gap-1.5 shadow-md shadow-mokai-gold/20">
           <span>🛒</span>
-          <span>Order Fresh Roast</span>
+          <span>Order Roast</span>
         </a>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="mokaiMobileToggle" type="button" class="md:hidden p-2 rounded-xl border border-mokai-border text-stone-200 hover:text-white hover:bg-stone-800 transition focus:outline-none" aria-label="Toggle navigation">
+          <svg id="mokaiHamIcon" class="w-5 h-5 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="mokaiCloseIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
 
+    </div>
+
+    <!-- Mobile Slide-Down Drawer -->
+    <div id="mokaiMobileDrawer" class="hidden md:hidden border-t border-mokai-border px-6 py-4 space-y-3 bg-mokai-obsidian/98 backdrop-blur-xl text-white transition-all duration-300">
+      <nav class="flex flex-col space-y-2 font-mono text-xs uppercase tracking-widest text-stone-300">
+        <a href="#beans" class="mokai-nav-link py-2 border-b border-white/10 hover:text-mokai-gold">Bean E-Commerce</a>
+        <a href="#brewbar" class="mokai-nav-link py-2 border-b border-white/10 hover:text-mokai-gold">Manual Brew Bar</a>
+        <a href="#cupping" class="mokai-nav-link py-2 border-b border-white/10 hover:text-mokai-gold">Barista Flights</a>
+        <a href="#reviews" class="mokai-nav-link py-2 border-b border-white/10 hover:text-mokai-gold">⭐ 1,810 Reviews</a>
+        <a href="#visit" class="mokai-nav-link py-2 hover:text-mokai-gold">Pali Hill Bar</a>
+      </nav>
+      <div class="pt-2">
+        <a href="#beans" class="mokai-nav-link block text-center py-3 bg-mokai-gold text-black font-mono text-xs font-bold uppercase tracking-wider rounded-full shadow-md">
+          Shop Single-Origin Lots ➔
+        </a>
+      </div>
     </div>
   </header>
 
@@ -693,10 +720,15 @@
         const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
         const progress = Math.min(Math.max(scrollY / (maxScroll || 1), 0), 1);
 
-        const x = Math.sin(progress * Math.PI * 3.5) * 35 + (window.innerWidth > 768 ? 68 : 55);
+        const isMobile = window.innerWidth < 768;
+        const baseOffsetX = isMobile ? 50 : 68;
+        const amplitudeX = isMobile ? 20 : 32;
+        const xRaw = Math.sin(progress * Math.PI * 3.5) * amplitudeX + baseOffsetX;
+        const x = isMobile ? Math.max(16, Math.min(64, xRaw)) : xRaw;
         const y = 20 + progress * 60;
         const rot = Math.sin(progress * Math.PI * 4) * 22;
-        const scale = 0.95 + Math.sin(progress * Math.PI) * 0.15;
+        let scale = 0.95 + Math.sin(progress * Math.PI) * 0.15;
+        if (isMobile) scale *= 0.72;
 
         wrapper.style.transform = `translate3d(${x}vw, ${y}vh, 0) rotate(${rot}deg) scale(${scale})`;
       }
@@ -731,7 +763,35 @@
       loop();
     }
 
+    // Mobile Drawer Toggle
+    function initMobileNav() {
+      const toggleBtn = document.getElementById('mokaiMobileToggle');
+      const drawer = document.getElementById('mokaiMobileDrawer');
+      const hIcon = document.getElementById('mokaiHamIcon');
+      const cIcon = document.getElementById('mokaiCloseIcon');
+      if (toggleBtn && drawer) {
+        toggleBtn.addEventListener('click', () => {
+          const isHidden = drawer.classList.contains('hidden');
+          drawer.classList.toggle('hidden');
+          if (hIcon && cIcon) {
+            hIcon.classList.toggle('hidden', isHidden);
+            cIcon.classList.toggle('hidden', !isHidden);
+          }
+        });
+        drawer.querySelectorAll('.mokai-nav-link').forEach(link => {
+          link.addEventListener('click', () => {
+            drawer.classList.add('hidden');
+            if (hIcon && cIcon) {
+              hIcon.classList.remove('hidden');
+              cIcon.classList.add('hidden');
+            }
+          });
+        });
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
+      initMobileNav();
       initTravelingCup();
       initCursor();
     });
