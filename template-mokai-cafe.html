@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mokai Café — Specialty Coffee Roasters & Pour-Over Bar | Pali Hill, Bandra West</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Fraunces, Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="template-config.js"></script>
+  <!-- Anti-Theft & Inspect Protection Shield -->
+  <script src="client-protection.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Fraunces"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            mokai: {
+              obsidian: '#100E0D',
+              surface: '#1A1715',
+              border: '#2A2522',
+              gold: '#D4AF37',
+              goldWarm: '#E5C468',
+              cream: '#FAF8F5',
+              stone: '#8E857E',
+              wood: '#2E2219'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* 3D Traveling Cup Stage */
+    #travelingCupStage {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 35;
+    }
+    #travelingCupWrapper {
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
+      filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.6));
+    }
+    .steam-container {
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 45px;
+    }
+    .steam-wisp {
+      position: absolute;
+      bottom: 0;
+      width: 8px;
+      height: 25px;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.4) 0%, rgba(255,255,255,0) 70%);
+      border-radius: 50%;
+      animation: steamRise 2.8s infinite ease-out;
+    }
+    .steam-wisp:nth-child(2) { left: 16px; animation-delay: 0.9s; height: 35px; }
+    .steam-wisp:nth-child(3) { left: 28px; animation-delay: 1.7s; height: 28px; }
+
+    @keyframes steamRise {
+      0% { transform: translateY(0) scaleX(1); opacity: 0; }
+      20% { opacity: 0.7; }
+      100% { transform: translateY(-40px) scaleX(2.5); opacity: 0; }
+    }
+
+    /* Custom Precision Cursor */
+    #cursorDot, #cursorRing {
+      position: fixed;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+    }
+    #cursorDot {
+      width: 7px;
+      height: 7px;
+      background: #D4AF37;
+      transition: opacity 0.2s;
+    }
+    #cursorRing {
+      width: 38px;
+      height: 38px;
+      border: 1.5px solid rgba(212, 175, 55, 0.4);
+      transition: width 0.2s, height 0.2s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #travelingCupStage, #cursorDot, #cursorRing { display: none !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-mokai-obsidian text-mokai-cream font-sans antialiased selection:bg-mokai-gold selection:text-black">
+
+  <!-- =========================================================
+       UNIVERSAL TEMPLATE SUITE TOP BAR
+       ========================================================= -->
+  <aside id="templateSwitcherBar" aria-label="Template Showcase Bar" class="bg-black text-white text-xs py-2.5 px-4 border-b border-stone-800 z-50 relative">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-mono font-bold uppercase tracking-wider text-amber-400 text-[11px]">Template Suite:</span>
+        <span class="text-stone-300 hidden sm:inline text-[11px]">Explore 5 specialized cafe & restaurant designs:</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <a href="template-cafe-free-india.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          🍔 Cafe Free India
+        </a>
+        <a href="template-golden-roast.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          ⭐ Golden Roast
+        </a>
+        <a href="template-ember-oak.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          🪵 Ember & Oak
+        </a>
+        <a href="template-mokai-cafe.html" class="px-3.5 py-1 bg-mokai-gold text-black font-bold rounded-full text-[11px] shadow-sm flex items-center gap-1">
+          <span>☕</span> Mokai Cafe (Active)
+        </a>
+        <a href="template-leaping-windows.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          📚 Leaping Windows
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- =========================================================
+       TRAVELING 3D COFFEE CUP
+       ========================================================= -->
+  <aside id="travelingCupStage" aria-hidden="true">
+    <div id="travelingCupWrapper" class="opacity-0">
+      <div class="steam-container">
+        <div class="steam-wisp"></div>
+        <div class="steam-wisp"></div>
+        <div class="steam-wisp"></div>
+      </div>
+      <div class="absolute -top-6 -right-6 bg-mokai-gold text-black text-[10px] font-mono font-bold px-3 py-1 rounded-full shadow-lg whitespace-nowrap">
+        ✦ Anaerobic V60 • SCA 88.5
+      </div>
+      <div class="relative w-full h-full flex items-center justify-center">
+        <img id="mainCupImg" src="coffee-cup.png" alt="Mokai Single Origin Cup" class="w-full h-full object-contain">
+        <img src="coffee-beans.png" alt="Roast Bean" class="absolute w-8 h-8 -top-3 -left-3 rotate-45">
+        <img src="coffee-beans.png" alt="Roast Bean" class="absolute w-9 h-9 top-14 -right-4 -rotate-12">
+      </div>
+    </div>
+  </aside>
+
+  <!-- Custom Precision Cursor -->
+  <div id="cursorDot" class="opacity-0"></div>
+  <div id="cursorRing" class="opacity-0"></div>
+
+  <!-- Announcement Bar -->
+  <div class="bg-mokai-surface text-mokai-stone text-xs py-2 px-4 text-center font-mono border-b border-mokai-border flex items-center justify-center gap-2">
+    <span class="text-mokai-gold">●</span>
+    <span><strong>FRESH HARVEST DROP:</strong> New Chikmagalur Anaerobic Yeast Ferment now shipping pan-India. Roasted in Pali Hill.</span>
+    <a href="#beans" class="text-mokai-gold underline ml-2 hover:text-white">Order Beans ➔</a>
+  </div>
+
+  <!-- =========================================================
+       HEADER / NAVBAR
+       ========================================================= -->
+  <header id="mainHeader" class="sticky top-0 z-40 bg-mokai-obsidian/95 backdrop-blur-md border-b border-mokai-border transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex flex-col group">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-mokai-gold animate-pulse"></span>
+          <span class="font-serif text-2xl sm:text-3xl font-light tracking-wider text-white group-hover:text-mokai-gold transition">
+            MOKAI
+          </span>
+        </div>
+        <span class="text-[9px] font-mono uppercase tracking-[0.25em] text-mokai-stone pl-5">
+          Roastery & Brew Bar • Pali Hill
+        </span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center space-x-7 text-xs font-mono uppercase tracking-widest text-stone-300">
+        <a href="#beans" class="hover:text-mokai-gold transition py-1">Bean E-Commerce</a>
+        <a href="#brewbar" class="hover:text-mokai-gold transition py-1">Manual Brew Bar</a>
+        <a href="#cupping" class="hover:text-mokai-gold transition py-1">Barista Flights</a>
+        <a href="#reviews" class="hover:text-mokai-gold transition py-1">1,810 Reviews</a>
+        <a href="#visit" class="hover:text-mokai-gold transition py-1">Pali Hill Bar</a>
+      </nav>
+
+      <!-- Right Action -->
+      <div class="flex items-center space-x-3">
+        <a href="#beans" class="px-5 py-2.5 bg-mokai-gold hover:bg-mokai-goldWarm text-black font-mono text-xs font-bold uppercase tracking-wider rounded-full transition flex items-center gap-1.5 shadow-md shadow-mokai-gold/20">
+          <span>🛒</span>
+          <span>Order Fresh Roast</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =========================================================
+       HERO SECTION: THE SPECIALTY COFFEE SANCTUARY
+       ========================================================= -->
+  <section class="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-b from-mokai-obsidian via-mokai-surface to-mokai-obsidian">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <div class="lg:col-span-7 space-y-6">
+        
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-mokai-surface text-mokai-gold text-xs font-mono uppercase tracking-wider border border-mokai-border">
+          <span>✦</span>
+          <span>Pali Hill, Bandra West • 4.3★ (1,810 Verified Reviews)</span>
+        </div>
+
+        <h1 class="font-serif text-4xl sm:text-6xl font-normal tracking-tight text-white leading-[1.12]">
+          Single-origin purity, <br class="hidden sm:inline">
+          <span class="italic text-mokai-gold">extracted with precision.</span>
+        </h1>
+
+        <p class="text-mokai-stone text-base sm:text-lg leading-relaxed max-w-xl font-light">
+          Sourcing the top 1% of Indian micro-lot coffees from high-elevation estates in Chikmagalur, Araku, and the Shevaroys. Light, Nordic-inspired roasts tailored for clean, expressive pour-overs.
+        </p>
+
+        <!-- Primary Pitch Value Box -->
+        <div class="p-5 rounded-2xl bg-mokai-surface/90 border border-mokai-border max-w-xl space-y-2">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl text-mokai-gold">⚖️</span>
+            <div>
+              <p class="font-mono text-xs uppercase tracking-wider font-bold text-white">Direct Bean E-Commerce & Brew Bar Pitch</p>
+              <p class="text-xs text-mokai-stone mt-0.5">Order 250g whole beans or custom grind with pan-India dispatch, or book a 45-minute barista pour-over flight in Pali Hill.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-4 pt-2 font-mono text-xs uppercase tracking-wider">
+          <a href="#beans" class="px-8 py-4 bg-mokai-gold hover:bg-mokai-goldWarm text-black font-bold rounded-full transition shadow-lg shadow-mokai-gold/20">
+            Browse Bean Catalog ➔
+          </a>
+          <a href="#brewbar" class="px-6 py-4 bg-mokai-surface hover:bg-mokai-border border border-mokai-border text-white font-medium rounded-full transition">
+            Explore Brew Methods
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Hero Visuals -->
+      <div class="lg:col-span-5 relative">
+        <div class="relative mx-auto max-w-md aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border border-mokai-border bg-mokai-surface">
+          <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1200&q=80" alt="Mokai Specialty Pour Over" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white font-mono">
+            <span class="text-xs text-mokai-gold uppercase tracking-widest">Barista Cupping Selection</span>
+            <p class="font-serif text-xl font-normal text-white mt-1">Chikmagalur Red Honey Process</p>
+            <p class="text-xs text-stone-300 mt-1 font-sans">Notes: White jasmine blossom, dried stone fruit, cane sugar finish.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 1: SINGLE-ORIGIN ROASTED BEAN E-COMMERCE CATALOG
+       ========================================================= -->
+  <section id="beans" class="py-20 bg-mokai-surface/60 border-y border-mokai-border">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+        <div>
+          <span class="font-mono text-xs uppercase tracking-widest text-mokai-gold font-bold">Pan-India Dispatch</span>
+          <h2 class="font-serif text-3xl sm:text-5xl font-normal tracking-tight text-white mt-1">
+            Freshly Roasted Coffee Beans
+          </h2>
+          <p class="text-mokai-stone text-xs sm:text-sm mt-2 font-mono">Roasted twice weekly in small batches on our Diedrich IR-5 in Bandra.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Bean 1: Chikmagalur Anaerobic -->
+        <div class="bg-mokai-obsidian rounded-3xl p-6 border border-mokai-border hover:border-mokai-gold/50 transition duration-300 space-y-6 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="aspect-square rounded-2xl overflow-hidden bg-mokai-surface relative">
+              <img src="https://images.unsplash.com/photo-1587734195503-904fca47e0e9?auto=format&fit=crop&w=700&q=80" alt="Chikmagalur Beans" class="w-full h-full object-cover">
+              <span class="absolute top-3 left-3 bg-mokai-gold text-black text-[10px] font-mono font-bold px-2.5 py-1 rounded-full uppercase">SCA 88.5</span>
+            </div>
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-mono text-mokai-gold uppercase">Anaerobic Honey</span>
+                <span class="font-mono text-base font-bold text-white">₹620 <span class="text-xs text-stone-500 font-normal">/ 250g</span></span>
+              </div>
+              <h3 class="font-serif text-2xl font-normal text-white mt-1">Chikmagalur Yellow Honey</h3>
+              <p class="text-xs text-mokai-stone mt-2 leading-relaxed">
+                72-hour anaerobic fermentation in sealed stainless steel tanks before raised bed drying. Explosive tropical sweetness.
+              </p>
+              <div class="pt-3 flex flex-wrap gap-1.5 text-[10px] font-mono text-stone-300">
+                <span class="px-2 py-0.5 rounded bg-mokai-surface border border-mokai-border">Jasmine</span>
+                <span class="px-2 py-0.5 rounded bg-mokai-surface border border-mokai-border">White Peach</span>
+                <span class="px-2 py-0.5 rounded bg-mokai-surface border border-mokai-border">Brown Sugar</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3 pt-2 border-t border-mokai-border">
+            <div>
+              <label class="block text-[10px] font-mono uppercase text-mokai-stone mb-1">Choose Grind Size</label>
+              <select id="grind1" class="w-full bg-mokai-surface border border-mokai-border rounded-xl px-3 py-2 text-xs font-mono text-stone-200 focus:outline-none focus:border-mokai-gold">
+                <option value="Whole Beans">Whole Beans (Recommended)</option>
+                <option value="Pour-Over / V60">Pour-Over / V60 (Medium-Fine)</option>
+                <option value="AeroPress">AeroPress (Fine)</option>
+                <option value="French Press / Cold Brew">French Press / Cold Brew (Coarse)</option>
+                <option value="Espresso">Espresso (Extra Fine)</option>
+              </select>
+            </div>
+            <button onclick="orderBeanPacket('Chikmagalur Yellow Honey', 620, 'grind1')" class="w-full py-3 bg-mokai-surface hover:bg-mokai-gold hover:text-black border border-mokai-gold text-mokai-gold font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition">
+              Order via WhatsApp (₹620)
+            </button>
+          </div>
+        </div>
+
+        <!-- Bean 2: Shevaroys Red Catuai -->
+        <div class="bg-mokai-obsidian rounded-3xl p-6 border border-mokai-border hover:border-mokai-gold/50 transition duration-300 space-y-6 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="aspect-square rounded-2xl overflow-hidden bg-mokai-surface relative">
+              <img src="https://images.unsplash.com/photo-1610632380989-680fe40816c6?auto=format&fit=crop&w=700&q=80" alt="Shevaroys Beans" class="w-full h-full object-cover">
+              <span class="absolute top-3 left-3 bg-mokai-gold text-black text-[10px] font-mono font-bold px-2.5 py-1 rounded-full uppercase">SCA 87.0</span>
+            </div>
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-mono text-mokai-gold uppercase">Washed Micro-Lot</span>
+                <span class="font-mono text-base font-bold text-white">₹580 <span class="text-xs text-stone-500 font-normal">/ 250g</span></span>
+              </div>
+              <h3 class="font-serif text-2xl font-normal text-white mt-1">Shevaroys Washed Catuai</h3>
+              <p class="text-xs text-mokai-stone mt-2 leading-relaxed">
+                Mountain spring washed coffee from the Eastern Ghats at 1,500m elevation. Balanced, round, and comforting.
+              </p>
+              <div class="pt-3 flex flex-wrap gap-1.5 text-[10px] font-mono text-stone-300">
+                <span class="px-2 py-0.5 rounded bg-mokai-surface border border-mokai-border">Milk Chocolate</span>
+                <span class="px-2 py-0.5 rounded bg-mokai-surface border border-mokai-border">Hazelnut</span>
+                <span class="px-2 py-0.5 rounded bg-mokai-surface border border-mokai-border">Orange Peel</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3 pt-2 border-t border-mokai-border">
+            <div>
+              <label class="block text-[10px] font-mono uppercase text-mokai-stone mb-1">Choose Grind Size</label>
+              <select id="grind2" class="w-full bg-mokai-surface border border-mokai-border rounded-xl px-3 py-2 text-xs font-mono text-stone-200 focus:outline-none focus:border-mokai-gold">
+                <option value="Whole Beans">Whole Beans (Recommended)</option>
+                <option value="Pour-Over / V60">Pour-Over / V60 (Medium-Fine)</option>
+                <option value="AeroPress">AeroPress (Fine)</option>
+                <option value="French Press / Cold Brew">French Press / Cold Brew (Coarse)</option>
+                <option value="Espresso">Espresso (Extra Fine)</option>
+              </select>
+            </div>
+            <button onclick="orderBeanPacket('Shevaroys Washed Catuai', 580, 'grind2')" class="w-full py-3 bg-mokai-surface hover:bg-mokai-gold hover:text-black border border-mokai-gold text-mokai-gold font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition">
+              Order via WhatsApp (₹580)
+            </button>
+          </div>
+        </div>
+
+        <!-- Bean 3: Araku Carbonic Maceration -->
+        <div class="bg-mokai-obsidian rounded-3xl p-6 border border-mokai-border hover:border-mokai-gold/50 transition duration-300 space-y-6 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="aspect-square rounded-2xl overflow-hidden bg-mokai-surface relative">
+              <img src="https://images.unsplash.com/photo-1518832553480-cd0e625ed3e6?auto=format&fit=crop&w=700&q=80" alt="Araku Beans" class="w-full h-full object-cover">
+              <span class="absolute top-3 left-3 bg-mokai-gold text-black text-[10px] font-mono font-bold px-2.5 py-1 rounded-full uppercase">SCA 89.0</span>
+            </div>
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-mono text-mokai-gold uppercase">Carbonic Maceration</span>
+                <span class="font-mono text-base font-bold text-white">₹690 <span class="text-xs text-stone-500 font-normal">/ 250g</span></span>
+              </div>
+              <h3 class="font-serif text-2xl font-normal text-white mt-1">Araku Valley Carbonic Lot</h3>
+              <p class="text-xs text-mokai-stone mt-2 leading-relaxed">
+                CO2 pressurized whole-cherry fermentation delivering profound winey complexity, dense body, and wild blackberry aromatics.
+              </p>
+              <div class="pt-3 flex flex-wrap gap-1.5 text-[10px] font-mono text-stone-300">
+                <span class="px-2 py-0.5 rounded bg-mokai-surface border border-mokai-border">Blackberry</span>
+                <span class="px-2 py-0.5 rounded bg-mokai-surface border border-mokai-border">Dark Cacao</span>
+                <span class="px-2 py-0.5 rounded bg-mokai-surface border border-mokai-border">Wild Honey</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3 pt-2 border-t border-mokai-border">
+            <div>
+              <label class="block text-[10px] font-mono uppercase text-mokai-stone mb-1">Choose Grind Size</label>
+              <select id="grind3" class="w-full bg-mokai-surface border border-mokai-border rounded-xl px-3 py-2 text-xs font-mono text-stone-200 focus:outline-none focus:border-mokai-gold">
+                <option value="Whole Beans">Whole Beans (Recommended)</option>
+                <option value="Pour-Over / V60">Pour-Over / V60 (Medium-Fine)</option>
+                <option value="AeroPress">AeroPress (Fine)</option>
+                <option value="French Press / Cold Brew">French Press / Cold Brew (Coarse)</option>
+                <option value="Espresso">Espresso (Extra Fine)</option>
+              </select>
+            </div>
+            <button onclick="orderBeanPacket('Araku Carbonic Lot', 690, 'grind3')" class="w-full py-3 bg-mokai-surface hover:bg-mokai-gold hover:text-black border border-mokai-gold text-mokai-gold font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition">
+              Order via WhatsApp (₹690)
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 2: MANUAL BREW BAR SHOWCASE (V60, AeroPress, etc.)
+       ========================================================= -->
+  <section id="brewbar" class="py-20 bg-mokai-obsidian">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-2">
+        <span class="font-mono text-xs uppercase tracking-widest text-mokai-gold font-bold">Extraction Craft</span>
+        <h2 class="font-serif text-3xl sm:text-5xl font-normal tracking-tight text-white">
+          Manual Brew Bar Methods
+        </h2>
+        <p class="text-mokai-stone text-xs sm:text-sm font-mono">Calibrated daily to 1.35% – 1.45% Total Dissolved Solids.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        
+        <div class="p-6 rounded-3xl bg-mokai-surface border border-mokai-border space-y-3">
+          <span class="font-mono text-2xl text-mokai-gold block">01 //</span>
+          <h3 class="font-serif text-xl font-normal text-white">Hario V60 Ceramic</h3>
+          <p class="text-xs text-mokai-stone leading-relaxed font-light">High clarity, tea-like lightness that accentuates bright floral and acidic fruit notes.</p>
+          <div class="pt-2 text-[11px] font-mono text-stone-400">
+            <p>• Ratio: 1:16 (15g to 240g)</p>
+            <p>• Water Temp: 93°C</p>
+            <p>• Brew Time: 2:45 min</p>
+          </div>
+        </div>
+
+        <div class="p-6 rounded-3xl bg-mokai-surface border border-mokai-border space-y-3">
+          <span class="font-mono text-2xl text-mokai-gold block">02 //</span>
+          <h3 class="font-serif text-xl font-normal text-white">AeroPress Inverted</h3>
+          <p class="text-xs text-mokai-stone leading-relaxed font-light">Full immersion pressure extraction that highlights rich body and caramelized chocolate undertones.</p>
+          <div class="pt-2 text-[11px] font-mono text-stone-400">
+            <p>• Ratio: 1:14 (18g to 250g)</p>
+            <p>• Water Temp: 88°C</p>
+            <p>• Brew Time: 1:30 min</p>
+          </div>
+        </div>
+
+        <div class="p-6 rounded-3xl bg-mokai-surface border border-mokai-border space-y-3">
+          <span class="font-mono text-2xl text-mokai-gold block">03 //</span>
+          <h3 class="font-serif text-xl font-normal text-white">Chemex Bonded</h3>
+          <p class="text-xs text-mokai-stone leading-relaxed font-light">Triple-layered wood-collared filter removing all cafestol oils for the cleanest cup profile possible.</p>
+          <div class="pt-2 text-[11px] font-mono text-stone-400">
+            <p>• Ratio: 1:15 (30g to 450g)</p>
+            <p>• Water Temp: 94°C</p>
+            <p>• Brew Time: 4:00 min</p>
+          </div>
+        </div>
+
+        <div class="p-6 rounded-3xl bg-mokai-surface border border-mokai-border space-y-3">
+          <span class="font-mono text-2xl text-mokai-gold block">04 //</span>
+          <h3 class="font-serif text-xl font-normal text-white">Slow Cold Drip</h3>
+          <p class="text-xs text-mokai-stone leading-relaxed font-light">Gravity fed drip-by-drip through ice water over 12 hours. Zero bitterness, deep natural sweetness.</p>
+          <div class="pt-2 text-[11px] font-mono text-stone-400">
+            <p>• 1 drip every 1.5 seconds</p>
+            <p>• Nitrogen chilled</p>
+            <p>• Served over hand-carved ice</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 3: BARISTA CUPPING FLIGHTS DESK
+       ========================================================= -->
+  <section id="cupping" class="py-20 bg-mokai-surface/40 border-t border-mokai-border">
+    <div class="max-w-4xl mx-auto px-6 text-center space-y-6">
+      
+      <span class="font-mono text-xs uppercase tracking-widest text-mokai-gold font-bold">Barista Experience</span>
+      <h2 class="font-serif text-3xl sm:text-5xl font-normal text-white">
+        Book a Guided Cupping Flight
+      </h2>
+      <p class="text-mokai-stone text-sm leading-relaxed max-w-xl mx-auto font-light">
+        Join our head roaster at the Pali Hill bar for an intimate 45-minute sensory journey across 4 distinct harvest lots, complete with flavor wheel calibration.
+      </p>
+
+      <div class="p-8 rounded-3xl bg-mokai-obsidian border border-mokai-border max-w-xl mx-auto text-left space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-[10px] font-mono uppercase text-mokai-stone mb-1">Your Name</label>
+            <input type="text" id="cupName" placeholder="Kavya Sharma" class="w-full bg-mokai-surface border border-mokai-border rounded-xl px-4 py-3 text-xs font-mono text-white focus:outline-none focus:border-mokai-gold">
+          </div>
+          <div>
+            <label class="block text-[10px] font-mono uppercase text-mokai-stone mb-1">Guests</label>
+            <select id="cupGuests" class="w-full bg-mokai-surface border border-mokai-border rounded-xl px-4 py-3 text-xs font-mono text-white focus:outline-none focus:border-mokai-gold">
+              <option value="1 Guest">1 Guest (₹650)</option>
+              <option value="2 Guests">2 Guests (₹1,200)</option>
+              <option value="Private Group (4)">Private Group of 4 (₹2,200)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-mono uppercase text-mokai-stone mb-1">Preferred Day & Time</label>
+          <input type="datetime-local" id="cupTime" class="w-full bg-mokai-surface border border-mokai-border rounded-xl px-4 py-3 text-xs font-mono text-white focus:outline-none focus:border-mokai-gold">
+        </div>
+
+        <button onclick="bookCuppingSession()" class="w-full py-4 bg-mokai-gold hover:bg-mokai-goldWarm text-black font-mono text-xs font-bold uppercase tracking-widest rounded-xl transition shadow-lg shadow-mokai-gold/20">
+          Confirm Cupping Flight via WhatsApp ➔
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 4: VERIFIED REVIEWS (1,810 Google Reviews)
+       ========================================================= -->
+  <section id="reviews" class="py-20 bg-mokai-obsidian border-t border-mokai-border">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-2">
+        <span class="font-mono text-xs uppercase tracking-widest text-mokai-gold font-bold">Pali Hill Regulars</span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-normal text-white">
+          Rated 4.3★ by 1,810 Verified Diners
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <div class="p-6 rounded-3xl bg-mokai-surface border border-mokai-border space-y-3 font-mono text-xs">
+          <p class="text-mokai-gold">★★★★★</p>
+          <p class="text-stone-300 leading-relaxed font-sans font-light">
+            "Finally a roastery in Bandra that understands light Nordic roasts. Their Chikmagalur Anaerobic on V60 tastes like liquid peaches. Quiet, elegant, zero loud distractions."
+          </p>
+          <div class="pt-2 border-t border-mokai-border flex justify-between text-[11px] text-mokai-stone">
+            <span class="font-bold text-white">Siddharth N.</span>
+            <span>Local Guide • 84 Reviews</span>
+          </div>
+        </div>
+
+        <div class="p-6 rounded-3xl bg-mokai-surface border border-mokai-border space-y-3 font-mono text-xs">
+          <p class="text-mokai-gold">★★★★★</p>
+          <p class="text-stone-300 leading-relaxed font-sans font-light">
+            "I order their Shevaroys whole beans every two weeks for my home espresso setup. The bag arrives within 24 hours of roasting in Pali Hill. Outstanding consistency."
+          </p>
+          <div class="pt-2 border-t border-mokai-border flex justify-between text-[11px] text-mokai-stone">
+            <span class="font-bold text-white">Zainab Merchant</span>
+            <span>Bandra West Resident</span>
+          </div>
+        </div>
+
+        <div class="p-6 rounded-3xl bg-mokai-surface border border-mokai-border space-y-3 font-mono text-xs">
+          <p class="text-mokai-gold">★★★★★</p>
+          <p class="text-stone-300 leading-relaxed font-sans font-light">
+            "The cupping masterclass was the highlight of our weekend. The baristas are deeply knowledgeable and passionate about Indian estate farming."
+          </p>
+          <div class="pt-2 border-t border-mokai-border flex justify-between text-[11px] text-mokai-stone">
+            <span class="font-bold text-white">Tanya Rao</span>
+            <span>Coffee Enthusiast</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 5: VISIT US (Pali Hill Flagship)
+       ========================================================= -->
+  <section id="visit" class="py-20 bg-mokai-surface/60 border-t border-mokai-border">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <div class="lg:col-span-6 space-y-6">
+        <span class="font-mono text-xs uppercase tracking-widest text-mokai-gold font-bold">Pali Hill Bar</span>
+        <h2 class="font-serif text-3xl sm:text-5xl font-normal text-white">
+          Find Us on Chapel Road
+        </h2>
+        <p class="text-mokai-stone text-sm leading-relaxed font-light">
+          Located off Pali Hill on iconic Chapel Road in Bandra West. Minimalist wood counter seating, high-speed Wi-Fi, and tranquil outdoor patio.
+        </p>
+
+        <div class="space-y-3 font-mono text-xs">
+          <div class="flex justify-between pb-2 border-b border-mokai-border">
+            <span class="text-mokai-stone">Hours</span>
+            <span class="font-bold text-white">7:30 AM – 10:30 PM Daily</span>
+          </div>
+          <div class="flex justify-between pb-2 border-b border-mokai-border">
+            <span class="text-mokai-stone">Address</span>
+            <span class="font-bold text-white text-right">Chapel Road, Off Pali Hill, Bandra West</span>
+          </div>
+          <div class="flex justify-between pb-2 border-b border-mokai-border">
+            <span class="text-mokai-stone">WhatsApp Roastery Desk</span>
+            <span class="font-bold text-mokai-gold">+91 98200 45678</span>
+          </div>
+          <div class="flex justify-between pb-2 border-b border-mokai-border">
+            <span class="text-mokai-stone">Google Verified</span>
+            <span class="font-bold text-emerald-400">4.3★ (1,810 Reviews)</span>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <a href="https://www.google.com/maps/place/Mokai+Cafe+Pali+Hill" target="_blank" class="inline-flex items-center gap-2 px-6 py-3.5 bg-mokai-gold hover:bg-mokai-goldWarm text-black rounded-full text-xs font-mono font-bold uppercase tracking-wider transition">
+            <span>🗺️</span>
+            <span>Open in Google Maps (1,810 Reviews)</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-6">
+        <div class="rounded-3xl overflow-hidden border border-mokai-border shadow-2xl aspect-[4/3] relative">
+          <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1200&q=80" alt="Mokai Pali Hill Interior" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-black/40 flex items-center justify-center p-6">
+            <div class="bg-mokai-obsidian/95 p-6 rounded-2xl border border-mokai-border max-w-xs text-center space-y-2">
+              <p class="font-serif text-xl font-normal text-white">MOKAI CAFÉ</p>
+              <p class="text-xs font-mono text-mokai-stone">Pali Hill, Bandra West, Mumbai</p>
+              <span class="inline-block px-3 py-1 bg-mokai-surface text-mokai-gold rounded-full text-[10px] font-mono border border-mokai-border">BAR OPEN DAILY</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
+  <footer class="py-12 bg-black text-stone-500 text-xs border-t border-mokai-border font-mono">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <p class="font-serif text-xl text-white">MOKAI</p>
+        <p class="text-[11px] text-stone-500 mt-1">Specialty Coffee Roasters & Pour-Over Bar • Pali Hill, Bandra West</p>
+      </div>
+      <div class="flex items-center space-x-6 text-[11px]">
+        <a href="#beans" class="hover:text-white">Bean Catalog</a>
+        <a href="#brewbar" class="hover:text-white">Brew Bar</a>
+        <a href="#cupping" class="hover:text-white">Cupping Flight</a>
+        <a href="#visit" class="hover:text-white">Pali Hill Bar</a>
+      </div>
+      <p class="text-[11px]">© 2026 Mokai Café. Pitch Suite Edition.</p>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       JAVASCRIPT: BEAN ORDERS & CUPPING LOGIC
+       ========================================================= -->
+  <script>
+    function orderBeanPacket(beanName, price, selectId) {
+      const select = document.getElementById(selectId);
+      const grind = select ? select.value : 'Whole Beans';
+      const msg = `☕ Mokai Coffee Bean Order:\n• Bean Lot: ${beanName}\n• Grind Preference: ${grind}\n• Price: ₹${price} (250g)\n• Please share shipping / pickup confirmation!`;
+      window.open(`https://wa.me/919820045678?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function bookCuppingSession() {
+      const name = document.getElementById('cupName').value.trim() || 'Coffee Enthusiast';
+      const guests = document.getElementById('cupGuests').value;
+      const time = document.getElementById('cupTime').value || 'This Weekend';
+      const msg = `✦ Mokai Barista Cupping Flight Booking:\n• Name: ${name}\n• Party: ${guests}\n• Date & Time: ${time.replace('T', ' at ')}\n• Location: Pali Hill Flagship Bar`;
+      window.open(`https://wa.me/919820045678?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // Traveling Cup Scroll Controller
+    function initTravelingCup() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const wrapper = document.getElementById('travelingCupWrapper');
+      if (!wrapper) return;
+      wrapper.classList.remove('opacity-0');
+
+      function updateCup() {
+        const scrollY = window.scrollY || window.pageYOffset;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = Math.min(Math.max(scrollY / (maxScroll || 1), 0), 1);
+
+        const x = Math.sin(progress * Math.PI * 3.5) * 35 + (window.innerWidth > 768 ? 68 : 55);
+        const y = 20 + progress * 60;
+        const rot = Math.sin(progress * Math.PI * 4) * 22;
+        const scale = 0.95 + Math.sin(progress * Math.PI) * 0.15;
+
+        wrapper.style.transform = `translate3d(${x}vw, ${y}vh, 0) rotate(${rot}deg) scale(${scale})`;
+      }
+
+      window.addEventListener('scroll', updateCup, { passive: true });
+      updateCup();
+    }
+
+    // Custom Precision Cursor
+    function initCursor() {
+      if (window.matchMedia('(pointer: coarse)').matches) return;
+      const dot = document.getElementById('cursorDot');
+      const ring = document.getElementById('cursorRing');
+      if (!dot || !ring) return;
+
+      dot.classList.remove('opacity-0');
+      ring.classList.remove('opacity-0');
+
+      let mX = -100, mY = -100, rX = -100, rY = -100;
+      window.addEventListener('mousemove', e => {
+        mX = e.clientX;
+        mY = e.clientY;
+        dot.style.transform = `translate3d(${mX}px, ${mY}px, 0)`;
+      });
+
+      function loop() {
+        rX += (mX - rX) * 0.18;
+        rY += (mY - rY) * 0.18;
+        ring.style.transform = `translate3d(${rX}px, ${rY}px, 0)`;
+        requestAnimationFrame(loop);
+      }
+      loop();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initTravelingCup();
+      initCursor();
+    });
+  </script>
+
+</body>
+</html>
+

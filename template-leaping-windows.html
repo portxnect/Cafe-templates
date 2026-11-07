@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaping Windows — Comic Book Cafe, Reading Room & Pop Culture Hub | Versova, Mumbai</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Space Grotesk, Bungee & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <script src="template-config.js"></script>
+  <!-- Anti-Theft & Inspect Protection Shield -->
+  <script src="client-protection.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            comic: ['"Bungee"', 'cursive'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            comic: {
+              yellow: '#FFD027',
+              red: '#FF3B30',
+              blue: '#0066FF',
+              dark: '#121212',
+              paper: '#FFFDF5',
+              surface: '#FFF7D6',
+              border: '#000000',
+              cyan: '#00E5FF'
+            }
+          },
+          boxShadow: {
+            'comic': '4px 4px 0px 0px #000000',
+            'comic-lg': '6px 6px 0px 0px #000000',
+            'comic-xl': '8px 8px 0px 0px #000000',
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Halftone dots texture */
+    .halftone-bg {
+      background-image: radial-gradient(#121212 15%, transparent 16%);
+      background-size: 16px 16px;
+    }
+    .halftone-subtle {
+      background-image: radial-gradient(rgba(0,0,0,0.06) 15%, transparent 16%);
+      background-size: 12px 12px;
+    }
+
+    /* 3D Traveling Cup Stage */
+    #travelingCupStage {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 35;
+    }
+    #travelingCupWrapper {
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
+      filter: drop-shadow(0 15px 20px rgba(0,0,0,0.3));
+    }
+    .steam-container {
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 45px;
+    }
+    .steam-wisp {
+      position: absolute;
+      bottom: 0;
+      width: 8px;
+      height: 25px;
+      background: radial-gradient(circle, rgba(255, 59, 48, 0.4) 0%, rgba(255,255,255,0) 70%);
+      border-radius: 50%;
+      animation: steamRise 2.8s infinite ease-out;
+    }
+    .steam-wisp:nth-child(2) { left: 16px; animation-delay: 0.9s; height: 35px; }
+    .steam-wisp:nth-child(3) { left: 28px; animation-delay: 1.7s; height: 28px; }
+
+    @keyframes steamRise {
+      0% { transform: translateY(0) scaleX(1); opacity: 0; }
+      20% { opacity: 0.7; }
+      100% { transform: translateY(-40px) scaleX(2.5); opacity: 0; }
+    }
+
+    /* Custom Comic Cursor */
+    #cursorDot, #cursorRing {
+      position: fixed;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+    }
+    #cursorDot {
+      width: 10px;
+      height: 10px;
+      background: #FF3B30;
+      border: 2px solid #000;
+      transition: opacity 0.2s;
+    }
+    #cursorRing {
+      width: 40px;
+      height: 40px;
+      border: 2px solid #000;
+      background-color: rgba(255, 208, 39, 0.2);
+      transition: width 0.2s, height 0.2s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #travelingCupStage, #cursorDot, #cursorRing { display: none !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-comic-paper text-comic-dark font-sans antialiased selection:bg-comic-yellow selection:text-black">
+
+  <!-- =========================================================
+       UNIVERSAL TEMPLATE SUITE TOP BAR
+       ========================================================= -->
+  <aside id="templateSwitcherBar" aria-label="Template Showcase Bar" class="bg-stone-950 text-white text-xs py-2.5 px-4 border-b border-stone-800 z-50 relative">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-mono font-bold uppercase tracking-wider text-amber-400 text-[11px]">Template Suite:</span>
+        <span class="text-stone-300 hidden sm:inline text-[11px]">Explore 5 specialized cafe & restaurant designs:</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <a href="template-cafe-free-india.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          🍔 Cafe Free India
+        </a>
+        <a href="template-golden-roast.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          ⭐ Golden Roast
+        </a>
+        <a href="template-ember-oak.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          🪵 Ember & Oak
+        </a>
+        <a href="template-mokai-cafe.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          ☕ Mokai Cafe
+        </a>
+        <a href="template-leaping-windows.html" class="px-3.5 py-1 bg-comic-yellow text-black font-bold rounded-full text-[11px] shadow-sm flex items-center gap-1 border border-black">
+          <span>📚</span> Leaping Windows (Active)
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- =========================================================
+       TRAVELING 3D CUP STAGE (Comic Pop-Art edition)
+       ========================================================= -->
+  <aside id="travelingCupStage" aria-hidden="true">
+    <div id="travelingCupWrapper" class="opacity-0">
+      <div class="steam-container">
+        <div class="steam-wisp"></div>
+        <div class="steam-wisp"></div>
+        <div class="steam-wisp"></div>
+      </div>
+      <div class="absolute -top-7 -right-4 bg-comic-red text-white text-[10px] font-comic px-3 py-1 rounded-full shadow-comic border-2 border-black whitespace-nowrap">
+        💥 SUPER COLD BREW!
+      </div>
+      <div class="relative w-full h-full flex items-center justify-center">
+        <img id="mainCupImg" src="coffee-cup.png" alt="Leaping Windows Comic Cup" class="w-full h-full object-contain">
+        <img src="coffee-beans.png" alt="Comic Bean" class="absolute w-8 h-8 -top-2 -left-2 rotate-12">
+        <img src="coffee-beans.png" alt="Comic Bean" class="absolute w-10 h-10 top-16 -right-4 -rotate-12">
+      </div>
+    </div>
+  </aside>
+
+  <!-- Custom Cursor -->
+  <div id="cursorDot" class="opacity-0"></div>
+  <div id="cursorRing" class="opacity-0"></div>
+
+  <!-- Announcement Bar -->
+  <div class="bg-comic-yellow text-black text-xs py-2 px-4 text-center font-bold tracking-wide border-b-2 border-black flex items-center justify-center gap-2">
+    <span>⚡</span>
+    <span><strong>POW! NEW COMICS ARRIVED:</strong> Over 120 new Manga & DC graphic novels added to our basement library this week!</span>
+    <a href="#passes" class="underline ml-2 hover:text-comic-red">Get Reading Pass ➔</a>
+  </div>
+
+  <!-- =========================================================
+       HEADER / NAVBAR (Comic Pop-Art Style)
+       ========================================================= -->
+  <header id="mainHeader" class="sticky top-0 z-40 bg-comic-paper border-b-3 border-black transition-all duration-300 shadow-comic">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 bg-comic-yellow border-2 border-black rounded-xl shadow-comic flex items-center justify-center text-xl font-comic group-hover:rotate-6 transition">
+          LW
+        </div>
+        <div>
+          <span class="font-comic text-xl sm:text-2xl tracking-wide text-black block leading-none">
+            LEAPING WINDOWS
+          </span>
+          <span class="text-[10px] font-display font-bold uppercase tracking-widest text-comic-red">
+            Comic Cafe & Reading Room • Versova
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center space-x-6 text-xs font-bold uppercase tracking-wider text-black">
+        <a href="#passes" class="hover:text-comic-red transition py-1">🎟️ Library Passes</a>
+        <a href="#merch" class="hover:text-comic-red transition py-1">🛍️ Graphic Novels & Merch</a>
+        <a href="#events" class="hover:text-comic-red transition py-1">🎭 Comedy & Events</a>
+        <a href="#menu" class="hover:text-comic-red transition py-1">🍔 Diner Menu</a>
+        <a href="#visit" class="hover:text-comic-red transition py-1">📍 Versova Basement</a>
+      </nav>
+
+      <!-- Right Action -->
+      <div class="flex items-center space-x-3">
+        <a href="#passes" class="px-5 py-2.5 bg-comic-red text-white font-comic text-xs uppercase tracking-wider rounded-xl border-2 border-black shadow-comic hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition flex items-center gap-1.5">
+          <span>⚡</span>
+          <span>Book Pass</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =========================================================
+       HERO SECTION: POP-ART COMIC EXPLOSION
+       ========================================================= -->
+  <section class="relative py-20 lg:py-28 overflow-hidden bg-comic-surface halftone-subtle border-b-3 border-black">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <div class="lg:col-span-7 space-y-6">
+        
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-comic-yellow text-black text-xs font-bold uppercase tracking-wider border-2 border-black shadow-comic">
+          <span>⭐</span>
+          <span>Versova's Cult Classic • 4.6★ (2,213 Verified Reviews)</span>
+        </div>
+
+        <h1 class="font-comic text-4xl sm:text-6xl text-black leading-[1.1] uppercase">
+          READ. EAT. CHILL. <br>
+          <span class="text-comic-red bg-white px-3 py-1 inline-block border-3 border-black shadow-comic my-2">REPEAT!</span>
+        </h1>
+
+        <p class="text-base sm:text-lg font-medium text-stone-800 leading-relaxed max-w-xl">
+          India's most beloved comic book cafe. Descend into our quiet basement library packed with 5,000+ graphic novels, or hang out in our sunny garden with loaded burgers and cold brew.
+        </p>
+
+        <!-- Primary Pitch Value Callout -->
+        <div class="p-5 rounded-2xl bg-white border-3 border-black shadow-comic max-w-xl space-y-2">
+          <div class="flex items-center gap-3">
+            <span class="text-3xl">🚀</span>
+            <div>
+              <p class="font-bold text-sm text-black">Digital Library Pass & Events Engine</p>
+              <p class="text-xs text-stone-600">Buy 1-hour cuppa & reading passes, shop exclusive comic merch, and book tickets for weekend standup comedy nights.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-4 pt-2">
+          <a href="#passes" class="px-8 py-4 bg-comic-yellow text-black font-comic text-xs uppercase tracking-wider rounded-xl border-3 border-black shadow-comic-lg hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition">
+            Book Reading Pass ➔
+          </a>
+          <a href="#events" class="px-6 py-4 bg-white text-black font-display font-bold text-xs uppercase tracking-wider rounded-xl border-3 border-black shadow-comic hover:bg-comic-paper transition">
+            Friday Standup Comedy
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Hero Visuals: Comic Style -->
+      <div class="lg:col-span-5 relative">
+        <div class="relative mx-auto max-w-md aspect-[4/5] rounded-3xl overflow-hidden border-4 border-black shadow-comic-xl bg-white">
+          <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=80" alt="Comic Book Collection" class="w-full h-full object-cover">
+          <div class="absolute bottom-4 left-4 right-4 bg-white/95 p-4 rounded-2xl border-3 border-black shadow-comic">
+            <span class="text-[10px] font-comic text-comic-red">BASEMENT SANCTUARY</span>
+            <p class="font-display font-bold text-sm text-black">5,000+ Comics & Graphic Novels</p>
+            <p class="text-xs text-stone-600">Marvel, DC, Manga, Vertigo, Tintin, Asterix & Indie Art.</p>
+          </div>
+        </div>
+
+        <!-- Comic Speech Bubble -->
+        <div class="absolute -top-6 -right-4 bg-comic-yellow p-4 rounded-3xl border-3 border-black shadow-comic hidden sm:block rotate-6">
+          <p class="font-comic text-xs text-black">BEST BURGERS IN VERSOVA!</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 1: COMIC LIBRARY PASS MEMBERSHIPS (The Primary Pitch)
+       ========================================================= -->
+  <section id="passes" class="py-20 bg-comic-paper">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-2">
+        <span class="font-mono text-xs uppercase tracking-widest text-comic-red font-bold">Pick Your Superpower</span>
+        <h2 class="font-comic text-3xl sm:text-5xl text-black">
+          COMIC LIBRARY PASSES
+        </h2>
+        <p class="text-stone-600 text-sm">Full access to our legendary basement comic collection with beanbags, air conditioning, and high-speed Wi-Fi.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        
+        <!-- Pass 1: 1-Hour Cuppa -->
+        <div class="bg-white rounded-3xl p-6 border-3 border-black shadow-comic-lg flex flex-col justify-between space-y-6 hover:-translate-y-1 transition">
+          <div class="space-y-4">
+            <div class="flex justify-between items-start">
+              <span class="px-3 py-1 bg-comic-yellow text-black font-comic text-xs rounded-lg border-2 border-black">CASUAL GEEK</span>
+              <span class="text-2xl font-comic text-black">₹150</span>
+            </div>
+            <h3 class="font-display text-xl font-bold text-black">1-Hour Cuppa & Comics</h3>
+            <p class="text-xs text-stone-600 leading-relaxed">
+              Perfect for a quick manga binge or after-work decompress session.
+            </p>
+            <ul class="text-xs text-stone-700 space-y-2 font-medium">
+              <li>✓ 1 Hour full basement comic library access</li>
+              <li>✓ Includes 1 Complimentary Americano or Iced Chai</li>
+              <li>✓ Comfy bean bag seating</li>
+            </ul>
+          </div>
+          <button onclick="bookLibraryPass('1-Hour Cuppa & Comics (₹150)')" class="w-full py-3 bg-black hover:bg-comic-red text-white font-comic text-xs uppercase rounded-xl border-2 border-black shadow-comic transition">
+            Book 1-Hour Pass ➔
+          </button>
+        </div>
+
+        <!-- Pass 2: Freelancer Day Pass (Featured) -->
+        <div class="bg-comic-yellow rounded-3xl p-6 border-3 border-black shadow-comic-xl flex flex-col justify-between space-y-6 relative -translate-y-2">
+          <span class="absolute -top-3.5 right-6 bg-comic-red text-white font-comic text-[10px] px-3 py-1 rounded-full border-2 border-black uppercase tracking-wider">
+            MOST POPULAR
+          </span>
+          <div class="space-y-4">
+            <div class="flex justify-between items-start">
+              <span class="px-3 py-1 bg-white text-black font-comic text-xs rounded-lg border-2 border-black">ALL-DAY PASS</span>
+              <span class="text-2xl font-comic text-black">₹450</span>
+            </div>
+            <h3 class="font-display text-xl font-bold text-black">Freelancer & Comic Day Pass</h3>
+            <p class="text-xs text-stone-800 leading-relaxed">
+              Spend the entire day working, sketching, and reading with food credits included.
+            </p>
+            <ul class="text-xs text-stone-900 space-y-2 font-semibold">
+              <li>✓ Unlimited all-day library access (10 AM to Midnight)</li>
+              <li>✓ <strong>₹200 Food & Drink Credit</strong> on cafe menu</li>
+              <li>✓ High-speed optical fiber Wi-Fi + laptop charging</li>
+              <li>✓ Dedicated outdoor patio or library desk</li>
+            </ul>
+          </div>
+          <button onclick="bookLibraryPass('Freelancer Day Pass (₹450)')" class="w-full py-3.5 bg-comic-red hover:bg-black text-white font-comic text-xs uppercase rounded-xl border-2 border-black shadow-comic transition">
+            Get All-Day Pass ➔
+          </button>
+        </div>
+
+        <!-- Pass 3: Monthly Superhero Resident -->
+        <div class="bg-white rounded-3xl p-6 border-3 border-black shadow-comic-lg flex flex-col justify-between space-y-6 hover:-translate-y-1 transition">
+          <div class="space-y-4">
+            <div class="flex justify-between items-start">
+              <span class="px-3 py-1 bg-comic-blue text-white font-comic text-xs rounded-lg border-2 border-black">RESIDENT GEEK</span>
+              <span class="text-2xl font-comic text-black">₹1,999<span class="text-xs text-stone-500 font-sans">/mo</span></span>
+            </div>
+            <h3 class="font-display text-xl font-bold text-black">Monthly Superhero Membership</h3>
+            <p class="text-xs text-stone-600 leading-relaxed">
+              Your second home in Versova with borrowing privileges and exclusive perks.
+            </p>
+            <ul class="text-xs text-stone-700 space-y-2 font-medium">
+              <li>✓ Unlimited library visits all 30 days</li>
+              <li>✓ Borrow up to 2 graphic novels home at a time</li>
+              <li>✓ 15% discount on all cafe food, coffee & merchandise</li>
+              <li>✓ Free VIP entry to Friday Standup Comedy nights</li>
+            </ul>
+          </div>
+          <button onclick="bookLibraryPass('Monthly Superhero Membership (₹1,999)')" class="w-full py-3 bg-black hover:bg-comic-red text-white font-comic text-xs uppercase rounded-xl border-2 border-black shadow-comic transition">
+            Join Membership ➔
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 2: MERCHANDISE & GRAPHIC NOVEL E-COMMERCE
+       ========================================================= -->
+  <section id="merch" class="py-20 bg-comic-surface border-y-3 border-black halftone-subtle">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div>
+          <span class="font-mono text-xs uppercase tracking-widest text-comic-red font-bold">Pop Culture Shop</span>
+          <h2 class="font-comic text-3xl sm:text-4xl text-black mt-1">
+            GRAPHIC NOVELS & MERCH
+          </h2>
+          <p class="text-stone-700 text-sm mt-1">Order signed graphic novels, custom pop-art tees, and indie collectibles shipped anywhere in India.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Merch 1 -->
+        <div class="bg-white rounded-2xl p-4 border-3 border-black shadow-comic space-y-3">
+          <div class="aspect-square rounded-xl overflow-hidden border-2 border-black bg-stone-100">
+            <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=700&q=80" alt="Graphic Novel" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <span class="text-[10px] font-comic bg-comic-yellow px-2 py-0.5 rounded border border-black">GRAPHIC NOVEL</span>
+            <h4 class="font-display font-bold text-sm text-black mt-1">Saga: Deluxe Edition Volume 1</h4>
+            <p class="font-mono font-bold text-sm text-comic-red mt-0.5">₹1,450</p>
+          </div>
+          <button onclick="buyMerch('Saga Deluxe Edition Vol 1', 1450)" class="w-full py-2 bg-comic-yellow hover:bg-black hover:text-white font-comic text-xs uppercase rounded-lg border-2 border-black transition">
+            Buy via WhatsApp ➔
+          </button>
+        </div>
+
+        <!-- Merch 2 -->
+        <div class="bg-white rounded-2xl p-4 border-3 border-black shadow-comic space-y-3">
+          <div class="aspect-square rounded-xl overflow-hidden border-2 border-black bg-stone-100">
+            <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=700&q=80" alt="Comic T-Shirt" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <span class="text-[10px] font-comic bg-comic-red text-white px-2 py-0.5 rounded border border-black">APPAREL</span>
+            <h4 class="font-display font-bold text-sm text-black mt-1">Leaping Windows Classic Comic Tee</h4>
+            <p class="font-mono font-bold text-sm text-comic-red mt-0.5">₹799</p>
+          </div>
+          <button onclick="buyMerch('Classic Comic Graphic Tee', 799)" class="w-full py-2 bg-comic-yellow hover:bg-black hover:text-white font-comic text-xs uppercase rounded-lg border-2 border-black transition">
+            Buy via WhatsApp ➔
+          </button>
+        </div>
+
+        <!-- Merch 3 -->
+        <div class="bg-white rounded-2xl p-4 border-3 border-black shadow-comic space-y-3">
+          <div class="aspect-square rounded-xl overflow-hidden border-2 border-black bg-stone-100">
+            <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=700&q=80" alt="Canvas Tote Bag" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <span class="text-[10px] font-comic bg-comic-cyan text-black px-2 py-0.5 rounded border border-black">COLLECTIBLE</span>
+            <h4 class="font-display font-bold text-sm text-black mt-1">Heavy Canvas Comic Tote Bag</h4>
+            <p class="font-mono font-bold text-sm text-comic-red mt-0.5">₹499</p>
+          </div>
+          <button onclick="buyMerch('Heavy Canvas Comic Tote Bag', 499)" class="w-full py-2 bg-comic-yellow hover:bg-black hover:text-white font-comic text-xs uppercase rounded-lg border-2 border-black transition">
+            Buy via WhatsApp ➔
+          </button>
+        </div>
+
+        <!-- Merch 4 -->
+        <div class="bg-white rounded-2xl p-4 border-3 border-black shadow-comic space-y-3">
+          <div class="aspect-square rounded-xl overflow-hidden border-2 border-black bg-stone-100">
+            <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=700&q=80" alt="Comic Art Print" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <span class="text-[10px] font-comic bg-purple-300 text-black px-2 py-0.5 rounded border border-black">ART PRINT</span>
+            <h4 class="font-display font-bold text-sm text-black mt-1">Manga Cyberpunk A3 Poster</h4>
+            <p class="font-mono font-bold text-sm text-comic-red mt-0.5">₹349</p>
+          </div>
+          <button onclick="buyMerch('Manga Cyberpunk A3 Poster', 349)" class="w-full py-2 bg-comic-yellow hover:bg-black hover:text-white font-comic text-xs uppercase rounded-lg border-2 border-black transition">
+            Buy via WhatsApp ➔
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 3: INDIE EVENTS & STANDUP COMEDY TICKETING
+       ========================================================= -->
+  <section id="events" class="py-20 bg-comic-paper">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-2">
+        <span class="font-mono text-xs uppercase tracking-widest text-comic-red font-bold">Live in the Basement</span>
+        <h2 class="font-comic text-3xl sm:text-5xl text-black">
+          WEEKEND GIGS & EVENTS
+        </h2>
+        <p class="text-stone-600 text-sm">Grab limited tickets for our weekend standup comedy specials and D&D tournaments.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        
+        <!-- Event 1 -->
+        <div class="bg-white rounded-3xl p-6 border-3 border-black shadow-comic-lg space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="px-3 py-1 bg-comic-red text-white font-comic text-[10px] rounded-lg border-2 border-black">THIS FRIDAY • 8:30 PM</span>
+            <span class="font-mono font-bold text-sm text-black">₹299/ticket</span>
+          </div>
+          <h3 class="font-comic text-xl text-black">Friday Standup Open Mic & Comic Roast</h3>
+          <p class="text-xs text-stone-600 leading-relaxed">
+            10 of Mumbai's finest indie comics testing brand-new material in our basement cellar. Includes 1 complimentary cold beverage.
+          </p>
+          <div class="pt-2 flex items-center justify-between">
+            <span class="text-[11px] font-mono text-stone-500 font-bold">⚡ Only 14 seats left</span>
+            <button onclick="bookEventTicket('Friday Standup Comedy (₹299)')" class="px-5 py-2.5 bg-comic-yellow hover:bg-black hover:text-white font-comic text-xs uppercase rounded-xl border-2 border-black transition shadow-comic">
+              Book Ticket ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- Event 2 -->
+        <div class="bg-white rounded-3xl p-6 border-3 border-black shadow-comic-lg space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="px-3 py-1 bg-comic-blue text-white font-comic text-[10px] rounded-lg border-2 border-black">SUNDAY • 4:00 PM</span>
+            <span class="font-mono font-bold text-sm text-black">₹399/team</span>
+          </div>
+          <h3 class="font-comic text-xl text-black">Dungeons & Dragons / Catan Showdown</h3>
+          <p class="text-xs text-stone-600 leading-relaxed">
+            Join seasoned Dungeon Masters for a 4-hour immersive campaign or table battle across Settlers of Catan & Ticket to Ride.
+          </p>
+          <div class="pt-2 flex items-center justify-between">
+            <span class="text-[11px] font-mono text-stone-500 font-bold">🎲 All boards & dice provided</span>
+            <button onclick="bookEventTicket('Sunday Board Game Showdown (₹399)')" class="px-5 py-2.5 bg-comic-yellow hover:bg-black hover:text-white font-comic text-xs uppercase rounded-xl border-2 border-black transition shadow-comic">
+              Reserve Seat ➔
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 4: DINER FOOD & COLD BREWS
+       ========================================================= -->
+  <section id="menu" class="py-20 bg-comic-surface border-t-3 border-black">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-2">
+        <span class="font-mono text-xs uppercase tracking-widest text-comic-red font-bold">Comic Fuel</span>
+        <h2 class="font-comic text-3xl sm:text-4xl text-black">
+          COMFORT BITES & BURGERS
+        </h2>
+        <p class="text-stone-700 text-sm">Gourmet comfort food cooked fresh to fuel your reading marathons.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="bg-white p-4 rounded-2xl border-3 border-black shadow-comic space-y-3">
+          <div class="aspect-video rounded-xl overflow-hidden border-2 border-black">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" alt="Cajun Burger" class="w-full h-full object-cover">
+          </div>
+          <h4 class="font-display font-bold text-sm text-black">The Cajun Comic Monster Burger</h4>
+          <p class="text-xs text-stone-600">Crisp patty, molten cheddar, caramelized onions, house Cajun secret sauce.</p>
+          <span class="font-mono font-bold text-comic-red text-sm block">₹440</span>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border-3 border-black shadow-comic space-y-3">
+          <div class="aspect-video rounded-xl overflow-hidden border-2 border-black">
+            <img src="https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80" alt="Nutella Pancakes" class="w-full h-full object-cover">
+          </div>
+          <h4 class="font-display font-bold text-sm text-black">Nutella & Banana Loaded Fluffy Stack</h4>
+          <p class="text-xs text-stone-600">Three oversized buttermilk pancakes smothered in warm Nutella and roasted almonds.</p>
+          <span class="font-mono font-bold text-comic-red text-sm block">₹390</span>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border-3 border-black shadow-comic space-y-3">
+          <div class="aspect-video rounded-xl overflow-hidden border-2 border-black">
+            <img src="https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?auto=format&fit=crop&w=600&q=80" alt="Cheesy Nachos" class="w-full h-full object-cover">
+          </div>
+          <h4 class="font-display font-bold text-sm text-black">The 'Holy Guacamole' Nacho Heap</h4>
+          <p class="text-xs text-stone-600">Corn tortillas piled high with warm queso, refried beans, sour cream, and jalapeños.</p>
+          <span class="font-mono font-bold text-comic-red text-sm block">₹420</span>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border-3 border-black shadow-comic space-y-3">
+          <div class="aspect-video rounded-xl overflow-hidden border-2 border-black">
+            <img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=600&q=80" alt="Cold Brew" class="w-full h-full object-cover">
+          </div>
+          <h4 class="font-display font-bold text-sm text-black">16-Hour Versova Cold Brew</h4>
+          <p class="text-xs text-stone-600">Slow-steeped Arabica micro-lot with subtle notes of dark chocolate and orange zest.</p>
+          <span class="font-mono font-bold text-comic-red text-sm block">₹240</span>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 5: VISIT US (Versova Flagship)
+       ========================================================= -->
+  <section id="visit" class="py-20 bg-comic-paper border-t-3 border-black">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <div class="lg:col-span-6 space-y-6">
+        <span class="font-mono text-xs uppercase tracking-widest text-comic-red font-bold">Versova Sanctuary</span>
+        <h2 class="font-comic text-3xl sm:text-5xl text-black">
+          FIND THE SECRET LAIR
+        </h2>
+        <p class="text-stone-700 text-sm leading-relaxed">
+          Tucked away in the quiet lanes of Versova near the beach. Shaded garden veranda upstairs, comic book library cellar downstairs.
+        </p>
+
+        <div class="space-y-3 font-mono text-xs">
+          <div class="flex justify-between pb-2 border-b-2 border-black">
+            <span class="text-stone-600">Hours</span>
+            <span class="font-bold text-black">10:00 AM – Midnight Daily</span>
+          </div>
+          <div class="flex justify-between pb-2 border-b-2 border-black">
+            <span class="text-stone-600">Address</span>
+            <span class="font-bold text-black text-right">3 Corner View, Off Dr. Chopra Marg, Versova</span>
+          </div>
+          <div class="flex justify-between pb-2 border-b-2 border-black">
+            <span class="text-stone-600">Phone / WhatsApp</span>
+            <span class="font-bold text-comic-red">+91 98200 34567</span>
+          </div>
+          <div class="flex justify-between pb-2 border-b-2 border-black">
+            <span class="text-stone-600">Google Rating</span>
+            <span class="font-bold text-emerald-700">4.6★ (2,213 Verified Reviews)</span>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <a href="https://www.google.com/maps/place/Leaping+Windows" target="_blank" class="inline-flex items-center gap-2 px-6 py-3.5 bg-black hover:bg-comic-red text-white rounded-xl text-xs font-comic uppercase tracking-wider border-2 border-black shadow-comic transition">
+            <span>🗺️</span>
+            <span>Open in Google Maps</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-6">
+        <div class="rounded-3xl overflow-hidden border-4 border-black shadow-comic-xl aspect-[4/3] relative">
+          <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1200&q=80" alt="Versova Library Room" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-black/20 flex items-center justify-center p-6">
+            <div class="bg-comic-yellow p-6 rounded-2xl border-3 border-black shadow-comic max-w-xs text-center space-y-2">
+              <p class="font-comic text-base text-black">LEAPING WINDOWS</p>
+              <p class="text-xs font-bold text-stone-800">Versova, Andheri West, Mumbai</p>
+              <span class="inline-block px-3 py-1 bg-white text-black rounded-lg text-[10px] font-comic border border-black">OPEN TILL MIDNIGHT</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
+  <footer class="py-12 bg-black text-stone-400 text-xs border-t-4 border-comic-yellow">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <p class="font-comic text-xl text-comic-yellow">LEAPING WINDOWS</p>
+        <p class="text-[11px] text-stone-400 mt-1">Comic Book Cafe, Basement Library & Pop Culture Sanctuary • Versova, Mumbai</p>
+      </div>
+      <div class="flex items-center space-x-6 text-[11px] font-mono">
+        <a href="#passes" class="hover:text-white">Library Passes</a>
+        <a href="#merch" class="hover:text-white">Graphic Novels</a>
+        <a href="#events" class="hover:text-white">Standup Events</a>
+        <a href="#visit" class="hover:text-white">Versova Lair</a>
+      </div>
+      <p class="text-[11px]">© 2026 Leaping Windows. Pitch Suite Edition.</p>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       JAVASCRIPT: PASS BOOKINGS, MERCH & TICKETS ROUTING
+       ========================================================= -->
+  <script>
+    function bookLibraryPass(passName) {
+      const msg = `📚 Leaping Windows Comic Pass Booking:\n• Pass Requested: ${passName}\n• Location: Versova Flagship\n• Please confirm date & timing!`;
+      window.open(`https://wa.me/919820034567?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function buyMerch(itemName, price) {
+      const msg = `🛍️ Leaping Windows Merch Order:\n• Item: ${itemName}\n• Price: ₹${price}\n• Please share shipping / pickup details!`;
+      window.open(`https://wa.me/919820034567?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function bookEventTicket(eventName) {
+      const msg = `🎭 Leaping Windows Event Ticket Booking:\n• Event: ${eventName}\n• Venue: Basement Stage, Versova\n• Please confirm seat availability!`;
+      window.open(`https://wa.me/919820034567?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // Traveling Cup Scroll Controller
+    function initTravelingCup() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const wrapper = document.getElementById('travelingCupWrapper');
+      if (!wrapper) return;
+      wrapper.classList.remove('opacity-0');
+
+      function updateCup() {
+        const scrollY = window.scrollY || window.pageYOffset;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = Math.min(Math.max(scrollY / (maxScroll || 1), 0), 1);
+
+        const x = Math.sin(progress * Math.PI * 3.5) * 35 + (window.innerWidth > 768 ? 68 : 55);
+        const y = 20 + progress * 60;
+        const rot = Math.sin(progress * Math.PI * 4) * 25;
+        const scale = 0.95 + Math.sin(progress * Math.PI) * 0.15;
+
+        wrapper.style.transform = `translate3d(${x}vw, ${y}vh, 0) rotate(${rot}deg) scale(${scale})`;
+      }
+
+      window.addEventListener('scroll', updateCup, { passive: true });
+      updateCup();
+    }
+
+    // Custom Cursor
+    function initCursor() {
+      if (window.matchMedia('(pointer: coarse)').matches) return;
+      const dot = document.getElementById('cursorDot');
+      const ring = document.getElementById('cursorRing');
+      if (!dot || !ring) return;
+
+      dot.classList.remove('opacity-0');
+      ring.classList.remove('opacity-0');
+
+      let mX = -100, mY = -100, rX = -100, rY = -100;
+      window.addEventListener('mousemove', e => {
+        mX = e.clientX;
+        mY = e.clientY;
+        dot.style.transform = `translate3d(${mX}px, ${mY}px, 0)`;
+      });
+
+      function loop() {
+        rX += (mX - rX) * 0.22;
+        rY += (mY - rY) * 0.22;
+        ring.style.transform = `translate3d(${rX}px, ${rY}px, 0)`;
+        requestAnimationFrame(loop);
+      }
+      loop();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initTravelingCup();
+      initCursor();
+    });
+  </script>
+
+</body>
+</html>
+

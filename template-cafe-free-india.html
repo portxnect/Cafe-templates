@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Café Free India — Retro Bombay Diner, Soul Food & Sports Screenings | Lower Parel, Mumbai</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Bebas Neue, Space Grotesk & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <script src="template-config.js"></script>
+  <!-- Anti-Theft & Inspect Protection Shield -->
+  <script src="client-protection.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            diner: ['"Bebas Neue"', 'cursive'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            cfi: {
+              red: '#DC2626',
+              redDark: '#B91C1C',
+              amber: '#F59E0B',
+              amberLight: '#FEF3C7',
+              dark: '#0F172A',
+              slate: '#1E293B',
+              border: '#334155',
+              cream: '#F8FAFC'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Neon Glow & Industrial Accents */
+    .neon-text {
+      text-shadow: 0 0 10px rgba(245, 158, 11, 0.6), 0 0 20px rgba(220, 38, 38, 0.4);
+    }
+    .neon-red {
+      text-shadow: 0 0 12px rgba(220, 38, 38, 0.8);
+    }
+
+    /* 3D Traveling Cup Stage */
+    #travelingCupStage {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 35;
+    }
+    #travelingCupWrapper {
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
+      filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.5));
+    }
+    .steam-container {
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 45px;
+    }
+    .steam-wisp {
+      position: absolute;
+      bottom: 0;
+      width: 8px;
+      height: 25px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.5) 0%, rgba(255,255,255,0) 70%);
+      border-radius: 50%;
+      animation: steamRise 2.8s infinite ease-out;
+    }
+    .steam-wisp:nth-child(2) { left: 16px; animation-delay: 0.9s; height: 35px; }
+    .steam-wisp:nth-child(3) { left: 28px; animation-delay: 1.7s; height: 28px; }
+
+    @keyframes steamRise {
+      0% { transform: translateY(0) scaleX(1); opacity: 0; }
+      20% { opacity: 0.7; }
+      100% { transform: translateY(-40px) scaleX(2.5); opacity: 0; }
+    }
+
+    /* Custom Cursor */
+    #cursorDot, #cursorRing {
+      position: fixed;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+    }
+    #cursorDot {
+      width: 8px;
+      height: 8px;
+      background: #F59E0B;
+      transition: opacity 0.2s;
+    }
+    #cursorRing {
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid rgba(245, 158, 11, 0.5);
+      transition: width 0.2s, height 0.2s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #travelingCupStage, #cursorDot, #cursorRing { display: none !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-cfi-dark text-cfi-cream font-sans antialiased selection:bg-cfi-amber selection:text-black">
+
+  <!-- =========================================================
+       UNIVERSAL TEMPLATE SUITE TOP BAR
+       ========================================================= -->
+  <aside id="templateSwitcherBar" aria-label="Template Showcase Bar" class="bg-black text-white text-xs py-2.5 px-4 border-b border-cfi-border z-50 relative">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-mono font-bold uppercase tracking-wider text-amber-400 text-[11px]">Template Suite:</span>
+        <span class="text-stone-300 hidden sm:inline text-[11px]">Explore 5 specialized cafe & restaurant designs:</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <a href="template-cafe-free-india.html" class="px-3.5 py-1 bg-cfi-red text-white font-bold rounded-full text-[11px] shadow-sm flex items-center gap-1">
+          <span>🍔</span> Cafe Free India (Active)
+        </a>
+        <a href="template-golden-roast.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          ⭐ Golden Roast
+        </a>
+        <a href="template-ember-oak.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          🪵 Ember & Oak
+        </a>
+        <a href="template-mokai-cafe.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          ☕ Mokai Cafe
+        </a>
+        <a href="template-leaping-windows.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          📚 Leaping Windows
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- =========================================================
+       TRAVELING 3D COFFEE CUP
+       ========================================================= -->
+  <aside id="travelingCupStage" aria-hidden="true">
+    <div id="travelingCupWrapper" class="opacity-0">
+      <div class="steam-container">
+        <div class="steam-wisp"></div>
+        <div class="steam-wisp"></div>
+        <div class="steam-wisp"></div>
+      </div>
+      <div class="absolute -top-6 -right-6 bg-cfi-amber text-black text-[10px] font-mono font-bold px-3 py-1 rounded-full shadow-lg whitespace-nowrap">
+        🍔 Diner Brew • ₹190
+      </div>
+      <div class="relative w-full h-full flex items-center justify-center">
+        <img id="mainCupImg" src="coffee-cup.png" alt="Cafe Free India Diner Cup" class="w-full h-full object-contain">
+        <img src="coffee-beans.png" alt="Bean" class="absolute w-8 h-8 -top-3 -left-3 rotate-45">
+        <img src="coffee-beans.png" alt="Bean" class="absolute w-10 h-10 top-14 -right-4 -rotate-12">
+      </div>
+    </div>
+  </aside>
+
+  <!-- Custom Cursor -->
+  <div id="cursorDot" class="opacity-0"></div>
+  <div id="cursorRing" class="opacity-0"></div>
+
+  <!-- Announcement Bar -->
+  <div class="bg-cfi-redDark text-white text-xs py-2 px-4 text-center font-bold tracking-wide border-b border-cfi-border flex items-center justify-center gap-2">
+    <span>🏆</span>
+    <span><strong>MATCH DAY LIVE SCREENING:</strong> Big screen tables now open for Premier League & IPL weekend clashes. Open till 1:00 AM.</span>
+    <a href="#sports" class="underline ml-2 hover:text-amber-300">Book Match Table ➔</a>
+  </div>
+
+  <!-- =========================================================
+       HEADER / NAVBAR
+       ========================================================= -->
+  <header id="mainHeader" class="sticky top-0 z-40 bg-cfi-dark/95 backdrop-blur-md border-b border-cfi-border transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex flex-col group">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-sm bg-cfi-red transform rotate-45"></span>
+          <span class="font-diner text-3xl sm:text-4xl tracking-wider text-white group-hover:text-cfi-amber transition">
+            CAFÉ FREE INDIA
+          </span>
+        </div>
+        <span class="text-[9px] font-mono uppercase tracking-[0.25em] text-cfi-amber pl-5">
+          Retro Diner & Soul Food • Lower Parel
+        </span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center space-x-7 text-xs font-bold uppercase tracking-wider text-stone-300">
+        <a href="#corporate" class="hover:text-cfi-amber transition py-1">🏢 Corporate Lunch Express</a>
+        <a href="#menu" class="hover:text-cfi-amber transition py-1">🍔 Monster Burgers</a>
+        <a href="#sports" class="hover:text-cfi-amber transition py-1">📺 Big Screen Matches</a>
+        <a href="#reviews" class="hover:text-cfi-amber transition py-1">1,804 Reviews</a>
+        <a href="#visit" class="hover:text-cfi-amber transition py-1">Lower Parel Station</a>
+      </nav>
+
+      <!-- Right Action -->
+      <div class="flex items-center space-x-3">
+        <a href="#corporate" class="px-5 py-2.5 bg-cfi-red hover:bg-cfi-redDark text-white font-diner text-lg tracking-wider uppercase rounded-xl shadow-md transition flex items-center gap-1.5">
+          <span>⚡</span>
+          <span>Order Team Lunch</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =========================================================
+       HERO SECTION: THE LOWER PAREL SOUL FOOD DINER
+       ========================================================= -->
+  <section class="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-b from-cfi-dark via-cfi-slate/50 to-cfi-dark">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <div class="lg:col-span-7 space-y-6">
+        
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cfi-slate text-cfi-amber text-xs font-mono uppercase tracking-wider border border-cfi-border">
+          <span>🔥</span>
+          <span>Lower Parel's Post-Work Landmark • 4.2★ (1,804 Verified Reviews)</span>
+        </div>
+
+        <h1 class="font-diner text-5xl sm:text-7xl text-white tracking-wide leading-[0.95] uppercase">
+          SOUL FOOD, MONSTER BURGERS & <br>
+          <span class="text-cfi-amber neon-text">LATE NIGHT BEATS.</span>
+        </h1>
+
+        <p class="text-stone-300 text-base sm:text-lg leading-relaxed max-w-xl font-light">
+          Opposite Deepak Cinema on NM Joshi Marg. Lower Parel's favorite diner for loaded smash burgers, sizzling platters, craft beer pitchers, and office team lunch catering.
+        </p>
+
+        <!-- Primary Pitch Value Box -->
+        <div class="p-5 rounded-2xl bg-cfi-slate/90 border border-cfi-border max-w-xl space-y-2">
+          <div class="flex items-center gap-3">
+            <span class="text-3xl text-cfi-amber">🏢</span>
+            <div>
+              <p class="font-bold text-sm text-white">Corporate Lunch Express & Office Catering Pitch</p>
+              <p class="text-xs text-stone-300 mt-0.5">Quick 20-min lunch combos and bulk corporate orders for One World Center, Peninsula Corporate Park, and Kamala Mills teams.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-4 pt-2">
+          <a href="#corporate" class="px-8 py-4 bg-cfi-red hover:bg-cfi-redDark text-white font-diner text-xl tracking-wider uppercase rounded-xl shadow-lg transition">
+            Book Team Lunch Combos ➔
+          </a>
+          <a href="#sports" class="px-6 py-4 bg-cfi-slate hover:bg-cfi-border border border-cfi-border text-white font-display font-bold text-xs uppercase tracking-wider rounded-xl transition">
+            Reserve Match Screen Table
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Hero Visuals -->
+      <div class="lg:col-span-5 relative">
+        <div class="relative mx-auto max-w-md aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-2 border-cfi-border bg-cfi-slate">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1200&q=80" alt="Cafe Free India Monster Burger" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
+            <span class="text-xs font-mono font-bold uppercase tracking-widest text-cfi-amber">Signature Boss Burger</span>
+            <p class="font-diner text-3xl tracking-wide text-white mt-1">THE LOWER PAREL DOUBLE SMASH</p>
+            <p class="text-xs text-stone-300 mt-1">Double aged beef or crispy chicken, bacon jam, cheddar, house secret diner glaze.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 1: CORPORATE TEAM LUNCH EXPRESS (Primary Pitch)
+       ========================================================= -->
+  <section id="corporate" class="py-20 bg-cfi-slate/60 border-y border-cfi-border">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+        <div>
+          <span class="font-mono text-xs uppercase tracking-widest text-cfi-amber font-bold">Lower Parel Corporate Hub</span>
+          <h2 class="font-diner text-4xl sm:text-6xl text-white tracking-wide mt-1">
+            CORPORATE TEAM LUNCH EXPRESS
+          </h2>
+          <p class="text-stone-300 text-xs sm:text-sm mt-1">Pre-order high-speed lunch combos delivered hot to your office lobby or ready at your reserved table in 15 mins.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Combo 1 -->
+        <div class="bg-cfi-dark rounded-3xl p-6 border border-cfi-border space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="px-3 py-1 bg-cfi-red text-white font-mono text-xs font-bold rounded-lg uppercase">BURGER COMBO</span>
+              <span class="font-diner text-2xl text-cfi-amber">₹399</span>
+            </div>
+            <h3 class="font-display text-lg font-bold text-white">The Desk Worker Burger Box</h3>
+            <p class="text-xs text-stone-400 leading-relaxed">
+              Crispy cottage cheese or spiced chicken burger, crinkle-cut seasoned fries, and a chilled aerated beverage or iced lemon tea.
+            </p>
+            <ul class="text-xs text-stone-300 space-y-1 font-mono">
+              <li>✓ Guaranteed 20-min express desk delivery</li>
+              <li>✓ Thermal hot bento packaging</li>
+            </ul>
+          </div>
+          <button onclick="orderCorporateCombo('Desk Worker Burger Box', 399)" class="w-full py-3 bg-cfi-slate hover:bg-cfi-red text-white font-diner text-lg tracking-wider uppercase rounded-xl transition">
+            Order Combo via WhatsApp (₹399)
+          </button>
+        </div>
+
+        <!-- Combo 2 -->
+        <div class="bg-cfi-dark rounded-3xl p-6 border-2 border-cfi-amber space-y-4 flex flex-col justify-between relative">
+          <span class="absolute -top-3 right-6 bg-cfi-amber text-black font-mono font-bold text-[10px] px-3 py-0.5 rounded-full uppercase">
+            TOP TEAM FAVORITE
+          </span>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="px-3 py-1 bg-cfi-amber text-black font-mono text-xs font-bold rounded-lg uppercase">SIZZLER BOWL</span>
+              <span class="font-diner text-2xl text-cfi-amber">₹449</span>
+            </div>
+            <h3 class="font-display text-lg font-bold text-white">Smoky Truffle Rice & Herb Sizzler Box</h3>
+            <p class="text-xs text-stone-300 leading-relaxed">
+              Butter herbed rice, grilled paneer steaks or barbecue chicken breast, charred corn, pepper sauce, and garlic bread.
+            </p>
+            <ul class="text-xs text-stone-200 space-y-1 font-mono">
+              <li>✓ Wholesome executive hot lunch</li>
+              <li>✓ Includes fresh mint cooler drink</li>
+            </ul>
+          </div>
+          <button onclick="orderCorporateCombo('Smoky Truffle Rice Sizzler Box', 449)" class="w-full py-3.5 bg-cfi-amber hover:bg-cfi-red hover:text-white text-black font-diner text-xl tracking-wider uppercase rounded-xl transition">
+            Order Sizzler Combo (₹449)
+          </button>
+        </div>
+
+        <!-- Combo 3 -->
+        <div class="bg-cfi-dark rounded-3xl p-6 border border-cfi-border space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="px-3 py-1 bg-emerald-600 text-white font-mono text-xs font-bold rounded-lg uppercase">TEAM FEAST</span>
+              <span class="font-diner text-2xl text-cfi-amber">₹1,799</span>
+            </div>
+            <h3 class="font-display text-lg font-bold text-white">5-Person Office War-Room Platter</h3>
+            <p class="text-xs text-stone-400 leading-relaxed">
+              Designed for project deliveries and client meetings: 2 gourmet 12" thin crust pizzas, 20 BBQ wings, massive loaded nacho heap, and 5 drinks.
+            </p>
+            <ul class="text-xs text-stone-300 space-y-1 font-mono">
+              <li>✓ Feeds 5 to 6 hungry professionals</li>
+              <li>✓ Saves ₹450 vs ordering individual items</li>
+            </ul>
+          </div>
+          <button onclick="orderCorporateCombo('5-Person Office War-Room Platter', 1799)" class="w-full py-3 bg-cfi-slate hover:bg-cfi-red text-white font-diner text-lg tracking-wider uppercase rounded-xl transition">
+            Order War-Room Platter (₹1,799)
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 2: LIVE SPORTS SCREENING TABLE RESERVATIONS
+       ========================================================= -->
+  <section id="sports" class="py-20 bg-cfi-dark">
+    <div class="max-w-4xl mx-auto px-6 text-center space-y-6">
+      
+      <span class="font-mono text-xs uppercase tracking-widest text-cfi-red font-bold">Match Night Hub</span>
+      <h2 class="font-diner text-4xl sm:text-6xl text-white tracking-wide">
+        RESERVE YOUR BIG SCREEN MATCH TABLE
+      </h2>
+      <p class="text-stone-300 text-sm leading-relaxed max-w-xl mx-auto font-light">
+        Live high-definition stadium surround sound, chilled craft beer pitchers, and prime booth tables for Premier League, Champions League, IPL & F1 weekends.
+      </p>
+
+      <div class="p-8 rounded-3xl bg-cfi-slate border border-cfi-border max-w-xl mx-auto text-left space-y-4 shadow-2xl">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-[10px] font-mono uppercase text-stone-400 mb-1">Your Name</label>
+            <input type="text" id="matchName" placeholder="Karan Singhal" class="w-full bg-cfi-dark border border-cfi-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-cfi-amber">
+          </div>
+          <div>
+            <label class="block text-[10px] font-mono uppercase text-stone-400 mb-1">Table Size</label>
+            <select id="matchGuests" class="w-full bg-cfi-dark border border-cfi-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-cfi-amber">
+              <option value="2 Guests (High Table)">2 Guests (High Table)</option>
+              <option value="4 Guests (Booth Table)">4 Guests (Booth Table)</option>
+              <option value="6–8 Guests (Main Screen Table)">6–8 Guests (Main Screen Table)</option>
+              <option value="10+ Corporate Group">10+ Corporate Match Group</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-mono uppercase text-stone-400 mb-1">Which Match / Sport Event?</label>
+          <input type="text" id="matchEvent" placeholder="e.g. Manchester Derby / Weekend IPL Clash" class="w-full bg-cfi-dark border border-cfi-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-cfi-amber">
+        </div>
+
+        <button onclick="bookMatchTable()" class="w-full py-4 bg-cfi-red hover:bg-cfi-redDark text-white font-diner text-xl tracking-wider uppercase rounded-xl transition shadow-lg">
+          Confirm Big Screen Table on WhatsApp ➔
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 3: RETRO DINER MENU (Gourmet Burgers & Soul Food)
+       ========================================================= -->
+  <section id="menu" class="py-20 bg-cfi-slate/40 border-t border-cfi-border">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-2">
+        <span class="font-mono text-xs uppercase tracking-widest text-cfi-amber font-bold">Retro Bombay Diner</span>
+        <h2 class="font-diner text-4xl sm:text-5xl text-white tracking-wide">
+          SIGNATURE SOUL FOOD
+        </h2>
+        <p class="text-stone-300 text-xs sm:text-sm">Messy, generous, flavor-packed dishes that made us a Lower Parel cult staple.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="bg-cfi-dark p-4 rounded-2xl border border-cfi-border space-y-3">
+          <div class="aspect-video rounded-xl overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" alt="Boss Burger" class="w-full h-full object-cover">
+          </div>
+          <h4 class="font-display font-bold text-sm text-white">The Lower Parel Boss Burger</h4>
+          <p class="text-xs text-stone-400">Double smash patty, crispy bacon jam, smoked gouda, house pickled jalapeños.</p>
+          <span class="font-mono font-bold text-cfi-amber text-sm block">₹490</span>
+        </div>
+
+        <div class="bg-cfi-dark p-4 rounded-2xl border border-cfi-border space-y-3">
+          <div class="aspect-video rounded-xl overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1527477378308-140ae2490957?auto=format&fit=crop&w=600&q=80" alt="BBQ Wings" class="w-full h-full object-cover">
+          </div>
+          <h4 class="font-display font-bold text-sm text-white">Smoky Peri-Peri Glazed Wings</h4>
+          <p class="text-xs text-stone-400">8 crispy jumbo chicken wings tossed in fiery African peri-peri glaze with blue cheese dip.</p>
+          <span class="font-mono font-bold text-cfi-amber text-sm block">₹380</span>
+        </div>
+
+        <div class="bg-cfi-dark p-4 rounded-2xl border border-cfi-border space-y-3">
+          <div class="aspect-video rounded-xl overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80" alt="Truffle Pasta" class="w-full h-full object-cover">
+          </div>
+          <h4 class="font-display font-bold text-sm text-white">Wild Truffle Mac & Cheese</h4>
+          <p class="text-xs text-stone-400">Four cheese molten sauce with sharp English cheddar, truffle oil, and panko crust.</p>
+          <span class="font-mono font-bold text-cfi-amber text-sm block">₹440</span>
+        </div>
+
+        <div class="bg-cfi-dark p-4 rounded-2xl border border-cfi-border space-y-3">
+          <div class="aspect-video rounded-xl overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80" alt="Brownie Sizzler" class="w-full h-full object-cover">
+          </div>
+          <h4 class="font-display font-bold text-sm text-white">S'mores Skillet Brownie</h4>
+          <p class="text-xs text-stone-400">Cast-iron bubbling Belgian chocolate brownie with toasted marshmallows and vanilla bean ice cream.</p>
+          <span class="font-mono font-bold text-cfi-amber text-sm block">₹340</span>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 4: VERIFIED REVIEWS (1,804 Google Reviews)
+       ========================================================= -->
+  <section id="reviews" class="py-20 bg-cfi-dark border-t border-cfi-border">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-2">
+        <span class="font-mono text-xs uppercase tracking-widest text-cfi-amber font-bold">Verified Diners</span>
+        <h2 class="font-diner text-4xl text-white tracking-wide">
+          RATED 4.2★ BY 1,804 VERIFIED GUESTS
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <div class="p-6 rounded-3xl bg-cfi-slate border border-cfi-border space-y-3 text-xs">
+          <p class="text-cfi-amber">★★★★★</p>
+          <p class="text-stone-300 leading-relaxed font-light">
+            "Our go-to team lunch destination from One World Center. The lunch burger boxes are crazy value and arrive piping hot within 20 minutes."
+          </p>
+          <div class="pt-2 border-t border-cfi-border flex justify-between text-[11px] text-stone-400">
+            <span class="font-bold text-white">Aditya K.</span>
+            <span>VP, Lower Parel FinTech</span>
+          </div>
+        </div>
+
+        <div class="p-6 rounded-3xl bg-cfi-slate border border-cfi-border space-y-3 text-xs">
+          <p class="text-cfi-amber">★★★★★</p>
+          <p class="text-stone-300 leading-relaxed font-light">
+            "Best match screening atmosphere in town. Stadium surround audio, ice cold beer pitchers, and burgers that don't skimp on portion size."
+          </p>
+          <div class="pt-2 border-t border-cfi-border flex justify-between text-[11px] text-stone-400">
+            <span class="font-bold text-white">Prateek Sharma</span>
+            <span>Local Guide • 96 Reviews</span>
+          </div>
+        </div>
+
+        <div class="p-6 rounded-3xl bg-cfi-slate border border-cfi-border space-y-3 text-xs">
+          <p class="text-cfi-amber">★★★★★</p>
+          <p class="text-stone-300 leading-relaxed font-light">
+            "The s'mores skillet brownie and peri-peri wings are undefeated. Open till 1 AM which makes it a blessing after late night office shifts."
+          </p>
+          <div class="pt-2 border-t border-cfi-border flex justify-between text-[11px] text-stone-400">
+            <span class="font-bold text-white">Sneha Jain</span>
+            <span>Lower Parel Regular</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 5: VISIT US (Lower Parel Station & Deepak Cinema)
+       ========================================================= -->
+  <section id="visit" class="py-20 bg-cfi-slate/60 border-t border-cfi-border">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <div class="lg:col-span-6 space-y-6">
+        <span class="font-mono text-xs uppercase tracking-widest text-cfi-amber font-bold">Lower Parel Station Hub</span>
+        <h2 class="font-diner text-4xl sm:text-6xl text-white tracking-wide">
+          FIND US ON NM JOSHI MARG
+        </h2>
+        <p class="text-stone-300 text-sm leading-relaxed">
+          Opposite historic Deepak Cinema on NM Joshi Marg, just 2 minutes from Lower Parel Railway Station. Valet parking available after 7:00 PM.
+        </p>
+
+        <div class="space-y-3 font-mono text-xs">
+          <div class="flex justify-between pb-2 border-b border-cfi-border">
+            <span class="text-stone-400">Hours</span>
+            <span class="font-bold text-white">11:30 AM – 1:00 AM Daily</span>
+          </div>
+          <div class="flex justify-between pb-2 border-b border-cfi-border">
+            <span class="text-stone-400">Address</span>
+            <span class="font-bold text-white text-right">NM Joshi Marg, Opp Deepak Cinema, Lower Parel</span>
+          </div>
+          <div class="flex justify-between pb-2 border-b border-cfi-border">
+            <span class="text-stone-400">Corporate Lunch Line</span>
+            <span class="font-bold text-cfi-amber">+91 98200 67890</span>
+          </div>
+          <div class="flex justify-between pb-2 border-b border-cfi-border">
+            <span class="text-stone-400">Google Rating</span>
+            <span class="font-bold text-emerald-400">4.2★ (1,804 Verified Reviews)</span>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <a href="https://www.google.com/maps/place/Cafe+Free+India" target="_blank" class="inline-flex items-center gap-2 px-6 py-3.5 bg-cfi-red hover:bg-cfi-redDark text-white rounded-xl text-xs font-diner text-lg uppercase tracking-wider transition">
+            <span>🗺️</span>
+            <span>Open in Google Maps (1,804 Reviews)</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-6">
+        <div class="rounded-3xl overflow-hidden border border-cfi-border shadow-2xl aspect-[4/3] relative">
+          <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80" alt="Cafe Free India Diner Interior" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-black/40 flex items-center justify-center p-6">
+            <div class="bg-cfi-dark/95 p-6 rounded-2xl border border-cfi-border max-w-xs text-center space-y-2">
+              <p class="font-diner text-2xl text-white">CAFÉ FREE INDIA</p>
+              <p class="text-xs text-stone-300">Lower Parel West, Mumbai</p>
+              <span class="inline-block px-3 py-1 bg-cfi-red text-white rounded-full text-[10px] font-mono font-bold">OPEN TILL 1:00 AM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
+  <footer class="py-12 bg-black text-stone-500 text-xs border-t border-cfi-border font-mono">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <p class="font-diner text-2xl text-cfi-amber">CAFÉ FREE INDIA</p>
+        <p class="text-[11px] text-stone-400 mt-1">Retro Diner, Soul Food & Big Screen Match Nights • Lower Parel, Mumbai</p>
+      </div>
+      <div class="flex items-center space-x-6 text-[11px]">
+        <a href="#corporate" class="hover:text-white">Corporate Express</a>
+        <a href="#menu" class="hover:text-white">Diner Menu</a>
+        <a href="#sports" class="hover:text-white">Match Screenings</a>
+        <a href="#visit" class="hover:text-white">Lower Parel Station</a>
+      </div>
+      <p class="text-[11px]">© 2026 Café Free India. Pitch Suite Edition.</p>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       JAVASCRIPT: CORPORATE ORDERS & MATCH TABLE LOGIC
+       ========================================================= -->
+  <script>
+    function orderCorporateCombo(comboName, price) {
+      const msg = `🏢 Café Free India Corporate Lunch Order:\n• Combo: ${comboName}\n• Price: ₹${price}\n• Location: Lower Parel Office Delivery\n• Please confirm delivery address & invoice details!`;
+      window.open(`https://wa.me/919820067890?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function bookMatchTable() {
+      const name = document.getElementById('matchName').value.trim() || 'Sports Fan';
+      const guests = document.getElementById('matchGuests').value;
+      const event = document.getElementById('matchEvent').value.trim() || 'Upcoming Live Match';
+
+      const msg = `📺 Café Free India Big Screen Table Reservation:\n• Name: ${name}\n• Table Size: ${guests}\n• Match / Event: ${event}\n• Please confirm table availability near the main screen!`;
+      window.open(`https://wa.me/919820067890?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // Traveling Cup Scroll Controller
+    function initTravelingCup() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const wrapper = document.getElementById('travelingCupWrapper');
+      if (!wrapper) return;
+      wrapper.classList.remove('opacity-0');
+
+      function updateCup() {
+        const scrollY = window.scrollY || window.pageYOffset;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = Math.min(Math.max(scrollY / (maxScroll || 1), 0), 1);
+
+        const x = Math.sin(progress * Math.PI * 3.5) * 35 + (window.innerWidth > 768 ? 68 : 55);
+        const y = 20 + progress * 60;
+        const rot = Math.sin(progress * Math.PI * 4) * 22;
+        const scale = 0.95 + Math.sin(progress * Math.PI) * 0.15;
+
+        wrapper.style.transform = `translate3d(${x}vw, ${y}vh, 0) rotate(${rot}deg) scale(${scale})`;
+      }
+
+      window.addEventListener('scroll', updateCup, { passive: true });
+      updateCup();
+    }
+
+    // Custom Cursor
+    function initCursor() {
+      if (window.matchMedia('(pointer: coarse)').matches) return;
+      const dot = document.getElementById('cursorDot');
+      const ring = document.getElementById('cursorRing');
+      if (!dot || !ring) return;
+
+      dot.classList.remove('opacity-0');
+      ring.classList.remove('opacity-0');
+
+      let mX = -100, mY = -100, rX = -100, rY = -100;
+      window.addEventListener('mousemove', e => {
+        mX = e.clientX;
+        mY = e.clientY;
+        dot.style.transform = `translate3d(${mX}px, ${mY}px, 0)`;
+      });
+
+      function loop() {
+        rX += (mX - rX) * 0.18;
+        rY += (mY - rY) * 0.18;
+        ring.style.transform = `translate3d(${rX}px, ${rY}px, 0)`;
+        requestAnimationFrame(loop);
+      }
+      loop();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initTravelingCup();
+      initCursor();
+    });
+  </script>
+
+</body>
+</html>
+

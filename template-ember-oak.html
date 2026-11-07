@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wood-Fired Roastery — Ember & Oak Kitchen & Specialty Roastery</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Fraunces (Editorial variable serif), DM Sans (Clean modern sans), JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <script src="template-config.js"></script>
+  <!-- Anti-Theft & Inspect Protection Shield -->
+  <script src="client-protection.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Fraunces"', 'ui-serif', 'Georgia', 'serif'],
+            sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            savora: {
+              cream: '#F7F1E8',
+              surface: '#EDE5D8',
+              surfaceLight: '#F3EDE2',
+              dark: '#1C140E',
+              darkDeep: '#161210',
+              olive: '#2E3A2F',
+              oliveDark: '#232C24',
+              accent: '#C8633F',
+              accentDark: '#B25230',
+              border: '#E2D9CC',
+              ink: '#4A433E',
+              inkLight: '#786E67',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* =========================================================
+       STICKY ATMOSPHERIC BACKGROUND FADING SYSTEM
+       ========================================================= */
+    #stickyBgContainer {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: -10;
+      overflow: hidden;
+    }
+    .sticky-bg-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .sticky-bg-layer.active {
+      opacity: 1;
+      transform: scale(1.03);
+    }
+
+    /* Ambient noise & warm grain overlay */
+    .film-grain {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(22, 18, 16, 0.4) 100%);
+      pointer-events: none;
+    }
+
+    /* =========================================================
+       MARQUEE INFINITE LOOPING TICKER
+       ========================================================= */
+    @keyframes marqueeScroll {
+      from { transform: translateX(0%); }
+      to { transform: translateX(-50%); }
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 28s linear infinite;
+    }
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    /* =========================================================
+       SCROLL REVEAL & FADE-UP ANIMATIONS
+       ========================================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.24s; }
+    .reveal-delay-3 { transition-delay: 0.36s; }
+
+    /* =========================================================
+       CUSTOM LUXURY CURSOR
+       ========================================================= */
+    #cursorDot, #cursorRing {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
+      border-radius: 9999px;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.25s ease, width 0.25s cubic-bezier(0.16, 1, 0.3, 1), height 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    #cursorDot { width: 7px; height: 7px; background-color: #C8633F; }
+    #cursorRing { width: 38px; height: 38px; border: 1.5px solid rgba(200, 99, 63, 0.65); display: flex; align-items: center; justify-content: center; }
+    #cursorRing.hover-interactive { width: 58px; height: 58px; background-color: rgba(200, 99, 63, 0.14); border-color: #C8633F; backdrop-filter: blur(4px); }
+    #cursorRing.hover-view { width: 72px; height: 72px; background-color: rgba(28, 20, 14, 0.9); border-color: #C8633F; backdrop-filter: blur(6px); }
+
+    @media (pointer: coarse) {
+      #cursorDot, #cursorRing { display: none !important; }
+    }
+
+    /* =========================================================
+       TRAVELING COFFEE CUP SCROLLYTELLING
+       ========================================================= */
+    #travelingCupStage {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 35;
+      overflow: hidden;
+    }
+    #travelingCupWrapper {
+      position: absolute;
+      width: 240px; height: 230px;
+      top: 0; left: 0;
+      transform-origin: center center;
+      will-change: transform;
+      filter: drop-shadow(0 25px 35px rgba(22, 18, 16, 0.5));
+      transition: opacity 0.4s ease;
+    }
+    @media (max-width: 768px) {
+      #travelingCupWrapper { width: 140px; height: 135px; }
+    }
+    .steam-container {
+      position: absolute;
+      top: -24px; left: 50%;
+      transform: translateX(-50%);
+      width: 60px; height: 42px;
+      pointer-events: none;
+    }
+    .steam-wisp {
+      position: absolute; bottom: 0;
+      width: 9px; height: 28px;
+      background: linear-gradient(to top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.15), transparent);
+      border-radius: 50%;
+      filter: blur(4px);
+      animation: steamRise 3.2s infinite ease-out;
+    }
+    .steam-wisp:nth-child(1) { left: 14px; animation-delay: 0s; }
+    .steam-wisp:nth-child(2) { left: 26px; animation-delay: 1.1s; }
+    .steam-wisp:nth-child(3) { left: 38px; animation-delay: 2.2s; }
+
+    @keyframes steamRise {
+      0% { transform: translateY(0) scaleX(1) scaleY(0.7); opacity: 0; }
+      25% { opacity: 0.65; }
+      70% { transform: translateY(-28px) scaleX(1.8) scaleY(1.4); opacity: 0.25; }
+      100% { transform: translateY(-46px) scaleX(2.4) scaleY(1.8); opacity: 0; }
+    }
+
+    .orbit-bean {
+      position: absolute; pointer-events: none;
+      filter: drop-shadow(0 8px 12px rgba(22, 18, 16, 0.6));
+      will-change: transform;
+    }
+
+    .savora-badge {
+      position: absolute;
+      top: -8px; right: -8px;
+      background: #C8633F;
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      box-shadow: 0 4px 18px rgba(200, 99, 63, 0.5);
+      border: 2px solid #F7F1E8;
+      white-space: nowrap;
+      z-index: 20;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #cursorDot, #cursorRing, #travelingCupStage { display: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .marquee-track { animation: none !important; }
+      .bg-layer { transition: none !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-savora-cream text-savora-dark font-sans antialiased selection:bg-savora-accent selection:text-white">
+
+  <!-- =========================================================
+       STICKY ATMOSPHERIC BACKGROUND FADING LAYERS
+       ========================================================= -->
+  <div id="stickyBgContainer" aria-hidden="true">
+    <!-- Layer 0: Hero Warm Woodsmoke & Evening Glow -->
+    <div id="bgLayerHero" class="sticky-bg-layer active" style="background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=2400&q=80');">
+      <div class="absolute inset-0 bg-savora-darkDeep/85 backdrop-blur-[2px]"></div>
+      <div class="film-grain"></div>
+    </div>
+    <!-- Layer 1: Forest Olive & Open Hearth (Appears during Chef Spotlight) -->
+    <div id="bgLayerOlive" class="sticky-bg-layer" style="background-image: url('https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=2000&q=80');">
+      <div class="absolute inset-0 bg-savora-olive/92 backdrop-blur-[1px]"></div>
+    </div>
+    <!-- Layer 2: Reservations & Evening Fire Glow -->
+    <div id="bgLayerFire" class="sticky-bg-layer" style="background-image: url('https://images.unsplash.com/photo-1515669097368-22e68427d265?auto=format&fit=crop&w=2000&q=80');">
+      <div class="absolute inset-0 bg-savora-darkDeep/90 backdrop-blur-[2px]"></div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       UNIVERSAL TEMPLATE SUITE TOP BAR
+       ========================================================= -->
+  <aside id="templateSwitcherBar" aria-label="Template Showcase Bar" class="bg-savora-darkDeep text-white text-xs py-2.5 px-4 border-b border-stone-800 z-50 relative">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-mono font-bold uppercase tracking-wider text-savora-accent text-[11px]">Template Suite:</span>
+        <span class="text-stone-300 hidden sm:inline text-[11px]">Explore 5 specialized cafe & restaurant designs:</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <a href="template-cafe-free-india.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          🍔 Cafe Free India
+        </a>
+        <a href="template-golden-roast.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          ⭐ Golden Roast
+        </a>
+        <a href="template-ember-oak.html" class="px-3.5 py-1 bg-savora-accent text-white font-bold rounded-full text-[11px] shadow-sm flex items-center gap-1">
+          <span>🪵</span> Ember & Oak (Active)
+        </a>
+        <a href="template-mokai-cafe.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          ☕ Mokai Cafe
+        </a>
+        <a href="template-leaping-windows.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
+          📚 Leaping Windows
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- =========================================================
+       FLOATING TRAVELING 3D COFFEE CUP & SCROLLYTELLING
+       ========================================================= -->
+  <aside id="travelingCupStage" aria-hidden="true">
+    <div id="travelingCupWrapper" class="opacity-0">
+      
+      <!-- Steam Wisps -->
+      <div class="steam-container">
+        <div class="steam-wisp"></div>
+        <div class="steam-wisp"></div>
+        <div class="steam-wisp"></div>
+      </div>
+
+      <!-- Savora Wood-Fire Badge -->
+      <div id="cupFloatingBadge" class="savora-badge">
+        🪵 <span id="cupBadgeText">Wood-Fired Roast • V60</span>
+      </div>
+
+      <!-- Ceramic Cup & Saucer -->
+      <div class="relative w-full h-full flex items-center justify-center">
+        <img id="mainCupImg" src="coffee-cup.png" alt="Ember & Oak Signature Roast" class="w-full h-full object-contain">
+        <img id="cupBean1" src="coffee-beans.png" alt="Bean" class="orbit-bean w-9 h-9 -top-4 -left-4">
+        <img id="cupBean2" src="coffee-beans.png" alt="Bean" class="orbit-bean w-11 h-11 top-16 -right-6">
+        <img id="cupBean3" src="coffee-beans.png" alt="Bean" class="orbit-bean w-8 h-8 -bottom-3 left-10">
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- Custom Cursor Follower -->
+  <div id="cursorDot" class="opacity-0"></div>
+  <div id="cursorRing" class="opacity-0">
+    <span id="cursorLabel" class="text-[9px] uppercase font-bold tracking-widest text-savora-accent opacity-0 transition-opacity duration-200"></span>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header id="mainHeader" class="fixed inset-x-0 z-40 transition-all duration-300 border-b border-transparent bg-transparent text-white" style="top: 0px;">
+    <div id="headerContainer" class="max-w-6xl mx-auto px-6 h-20 transition-all duration-300 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" id="navBrandLogo" class="group inline-flex items-center gap-3 font-serif text-2xl font-bold tracking-tight text-white hover:text-savora-accent transition" data-cursor="link">
+        <span class="w-2.5 h-2.5 rounded-full bg-savora-accent animate-pulse"></span>
+        <span id="navBrandText">Ember & Oak</span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav id="navLinks" class="hidden md:flex items-center space-x-8 text-xs font-medium uppercase tracking-widest text-stone-200">
+        <a href="#story" class="nav-item hover:text-savora-accent transition py-1" data-cursor="link">Our Story</a>
+        <a href="#dishes" class="nav-item hover:text-savora-accent transition py-1" data-cursor="link">Signature Dishes</a>
+        <a href="#menu" class="nav-item hover:text-savora-accent transition py-1" data-cursor="link">The Menu</a>
+        <a href="#chef" class="nav-item hover:text-savora-accent transition py-1" data-cursor="link">Meet the Chef</a>
+        <a href="#gallery" class="nav-item hover:text-savora-accent transition py-1" data-cursor="link">Gallery</a>
+        <a href="#visit" class="nav-item hover:text-savora-accent transition py-1" data-cursor="link">Visit Us</a>
+      </nav>
+
+      <!-- Right Actions: Book a Table & Mobile Toggle -->
+      <div class="flex items-center space-x-3 sm:space-x-4">
+        <a href="#reserve" id="navBookBtn" class="px-5 sm:px-6 py-2.5 bg-savora-accent text-white text-xs font-bold uppercase tracking-wider rounded-full hover:bg-savora-accentDark transition duration-200 shadow-md shadow-savora-accent/30" data-cursor="book">
+          Book a Table
+        </a>
+
+        <!-- Mobile Hamburger Toggle -->
+        <button id="mobileNavToggle" type="button" class="md:hidden p-2 rounded-xl border border-white/30 text-white focus:outline-none transition" aria-label="Toggle Navigation Menu">
+          <svg id="hamburgerIcon" class="w-5 h-5 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg id="closeIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Slide-Down Drawer -->
+    <div id="mobileDrawer" class="hidden md:hidden border-t border-white/10 bg-[#1C140E]/95 backdrop-blur-xl text-white px-6 py-6 space-y-4 shadow-xl">
+      <nav class="flex flex-col space-y-3 font-serif text-base tracking-wide">
+        <a href="#story" class="mobile-nav-link py-2 border-b border-white/10 transition">Our Story</a>
+        <a href="#dishes" class="mobile-nav-link py-2 border-b border-white/10 transition">Signature Dishes</a>
+        <a href="#menu" class="mobile-nav-link py-2 border-b border-white/10 transition">The Menu</a>
+        <a href="#chef" class="mobile-nav-link py-2 border-b border-white/10 transition">Meet the Chef</a>
+        <a href="#gallery" class="mobile-nav-link py-2 border-b border-white/10 transition">Gallery</a>
+        <a href="#visit" class="mobile-nav-link py-2 transition">Visit & Hours</a>
+      </nav>
+      <div class="pt-2">
+        <a href="#reserve" class="mobile-nav-link block text-center py-3 bg-savora-accent text-white text-xs font-bold uppercase tracking-wider rounded-full shadow-md">
+          Book Hearth Table
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================
+       SECTION 0: HERO (Slow Food, Honest Fire, A Table Worth Staying At)
+       ========================================================= -->
+  <section id="heroSection" class="relative flex min-h-[100svh] flex-col justify-center overflow-hidden text-white pt-24 pb-20">
+    <div class="max-w-6xl mx-auto px-6 relative z-10 w-full">
+      <div class="max-w-3xl space-y-6">
+        
+        <div class="inline-flex items-center gap-2 font-mono text-xs text-savora-accent bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15">
+          <span>●</span>
+          <span>Seasonal kitchen · Est. 2012</span>
+        </div>
+
+        <h1 class="font-serif text-5xl sm:text-7xl lg:text-8xl font-normal tracking-tight text-white leading-[1.04]">
+          Slow food, honest fire, a table worth staying at.
+        </h1>
+
+        <p class="text-stone-300 text-base sm:text-lg max-w-xl font-normal leading-relaxed">
+          Market produce, wood-fired cooking and single-estate pour-overs, served in a warm dining room in the heart of Mumbai.
+        </p>
+
+        <div class="pt-4 flex flex-wrap items-center gap-4">
+          <a href="#reserve" class="px-8 py-4 bg-savora-accent text-white font-bold text-xs uppercase tracking-wider rounded-full hover:bg-savora-accentDark transition shadow-lg shadow-savora-accent/30 inline-flex items-center gap-2" data-cursor="book">
+            <span>Book a table</span>
+            <span>➔</span>
+          </a>
+          <a href="#menu" class="px-8 py-4 bg-white/15 border border-white/20 text-white font-semibold text-xs uppercase tracking-wider rounded-full hover:bg-white/25 transition backdrop-blur-md" data-cursor="link">
+            Explore the Menu
+          </a>
+        </div>
+
+        <!-- Social Proof Stats -->
+        <div class="pt-10 border-t border-white/15 flex flex-wrap items-center gap-y-3 gap-x-8 text-xs text-stone-300">
+          <div><strong class="text-white font-bold">4.8 ★</strong> Google Reviews</div>
+          <span class="text-stone-600 hidden sm:inline">•</span>
+          <div>Wood-Fired Hearth & Robata</div>
+          <span class="text-stone-600 hidden sm:inline">•</span>
+          <div>Estate Natural Coffees & Wines</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       INFINITE LOOPING MARQUEE TICKER
+       ========================================================= -->
+  <div class="w-full overflow-hidden bg-savora-surface border-y border-savora-border py-4 font-serif text-sm tracking-widest uppercase text-savora-ink select-none">
+    <div class="marquee-track flex gap-8 items-center">
+      <span class="flex items-center gap-8">
+        <span>Wood-fired grill</span> <span>✦</span>
+        <span>Local farms</span> <span>✦</span>
+        <span>Natural wines</span> <span>✦</span>
+        <span>Seasonal menu</span> <span>✦</span>
+        <span>Handmade pasta</span> <span>✦</span>
+        <span>Weekend brunch</span> <span>✦</span>
+        <span>Single-origin roastery</span> <span>✦</span>
+      </span>
+      <span class="flex items-center gap-8">
+        <span>Wood-fired grill</span> <span>✦</span>
+        <span>Local farms</span> <span>✦</span>
+        <span>Natural wines</span> <span>✦</span>
+        <span>Seasonal menu</span> <span>✦</span>
+        <span>Handmade pasta</span> <span>✦</span>
+        <span>Weekend brunch</span> <span>✦</span>
+        <span>Single-origin roastery</span> <span>✦</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       SECTION 1: OUR STORY (A Neighborhood Table, Cooked with Patience)
+       ========================================================= -->
+  <section id="story" class="py-24 sm:py-32 bg-savora-cream text-savora-dark relative z-10">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        
+        <!-- Left Visual Collage -->
+        <div class="lg:col-span-6 relative">
+          <div class="relative mx-auto max-w-md">
+            
+            <div class="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-savora-surface">
+              <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80" alt="Ember & Oak dining room" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Overlapping Chef Plating Image -->
+            <div class="absolute -bottom-8 -right-6 w-3/5 aspect-square rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+              <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=1400&q=80" alt="Chef over open fire" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Years Badge -->
+            <div class="absolute -top-4 -left-4 bg-savora-accent text-white px-4 py-2.5 rounded-2xl shadow-lg font-serif text-sm font-bold">
+              14 Years of Craft
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right Story Copy -->
+        <div class="lg:col-span-6 space-y-6 reveal">
+          <div class="font-mono text-xs uppercase tracking-widest text-savora-accent font-bold">
+            01 // Our Story
+          </div>
+
+          <h2 class="font-serif text-3xl sm:text-5xl font-normal tracking-tight text-savora-dark leading-[1.12]">
+            A neighborhood table, cooked with patience.
+          </h2>
+
+          <p class="text-savora-ink text-sm sm:text-base leading-relaxed">
+            Ember & Oak began as a twelve-seat counter and a wood oven. More than a decade later, we still cook the same way: whole ingredients, open flames, and the quiet belief that good food takes whatever time it takes.
+          </p>
+
+          <p class="text-savora-inkLight text-xs sm:text-sm leading-relaxed">
+            Every morning our kitchen receives heirloom vegetables harvested at dawn, ethically-caught seafood from Maharashtra's coastal fishermen, and micro-lot coffee beans roasted specifically for our wood-fired room.
+          </p>
+
+          <div class="pt-6 grid grid-cols-3 gap-6 border-t border-savora-border">
+            <div>
+              <p class="font-serif text-3xl sm:text-4xl font-bold text-savora-dark">14</p>
+              <p class="text-[11px] uppercase tracking-wider text-savora-inkLight font-semibold mt-1">Years on the fire</p>
+            </div>
+            <div>
+              <p class="font-serif text-3xl sm:text-4xl font-bold text-savora-dark">26</p>
+              <p class="text-[11px] uppercase tracking-wider text-savora-inkLight font-semibold mt-1">Local Farm Partners</p>
+            </div>
+            <div>
+              <p class="font-serif text-3xl sm:text-4xl font-bold text-savora-dark">100%</p>
+              <p class="text-[11px] uppercase tracking-wider text-savora-inkLight font-semibold mt-1">Scratch Kitchen</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 2: SIGNATURE PLATES (Dishes Our Guests Come Back For)
+       ========================================================= -->
+  <section id="dishes" class="py-24 sm:py-32 bg-savora-surface text-savora-dark border-t border-savora-border relative z-10">
+    <div class="max-w-6xl mx-auto px-6">
+      
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-16 gap-6">
+        <div>
+          <span class="font-mono text-xs uppercase tracking-widest text-savora-accent font-bold">02 // Signature Plates</span>
+          <h2 class="font-serif text-3xl sm:text-5xl font-normal tracking-tight text-savora-dark mt-2">
+            Dishes our guests come back for.
+          </h2>
+        </div>
+        <a href="#menu" class="text-xs uppercase font-bold tracking-wider text-savora-accent hover:underline flex items-center gap-1.5" data-cursor="link">
+          <span>View complete menu</span>
+          <span>➔</span>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Plate 1: Salmon -->
+        <div class="bg-white rounded-3xl overflow-hidden border border-savora-border shadow-sm hover:shadow-xl transition-all duration-500 group flex flex-col justify-between" data-cursor="view">
+          <div>
+            <div class="aspect-[4/3] overflow-hidden bg-stone-200 relative">
+              <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=1200&q=80" alt="Fire-Roasted Salmon" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <span class="absolute top-4 left-4 bg-savora-dark/90 text-white font-mono text-[10px] uppercase tracking-wider px-3 py-1 rounded-full backdrop-blur-sm">
+                Wood-Fired
+              </span>
+            </div>
+            <div class="p-6 space-y-2">
+              <div class="flex justify-between items-baseline">
+                <h3 class="font-serif text-xl font-bold text-savora-dark group-hover:text-savora-accent transition">Fire-Roasted Salmon</h3>
+                <span class="font-mono text-sm font-bold text-savora-accent">₹820</span>
+              </div>
+              <p class="text-xs text-savora-ink leading-relaxed">Charred over oak embers with fennel pollen, braised leeks, and a preserved lemon emulsion.</p>
+            </div>
+          </div>
+          <div class="px-6 pb-6 pt-2">
+            <a href="#reserve" class="w-full py-2.5 bg-savora-cream border border-savora-border rounded-xl text-xs font-bold uppercase tracking-wider text-savora-dark hover:bg-savora-dark hover:text-white transition flex items-center justify-center gap-1">
+              Order at Table ➔
+            </a>
+          </div>
+        </div>
+
+        <!-- Plate 2: Tagliatelle -->
+        <div class="bg-white rounded-3xl overflow-hidden border border-savora-border shadow-sm hover:shadow-xl transition-all duration-500 group flex flex-col justify-between" data-cursor="view">
+          <div>
+            <div class="aspect-[4/3] overflow-hidden bg-stone-200 relative">
+              <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=1200&q=80" alt="Hand-Cut Tagliatelle" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <span class="absolute top-4 left-4 bg-savora-dark/90 text-white font-mono text-[10px] uppercase tracking-wider px-3 py-1 rounded-full backdrop-blur-sm">
+                Handmade Pasta
+              </span>
+            </div>
+            <div class="p-6 space-y-2">
+              <div class="flex justify-between items-baseline">
+                <h3 class="font-serif text-xl font-bold text-savora-dark group-hover:text-savora-accent transition">Hand-Cut Tagliatelle</h3>
+                <span class="font-mono text-sm font-bold text-savora-accent">₹690</span>
+              </div>
+              <p class="text-xs text-savora-ink leading-relaxed">Fresh egg pasta rolled hourly, tossed with wild chanterelles, thyme butter, and 24-month Parmigiano-Reggiano.</p>
+            </div>
+          </div>
+          <div class="px-6 pb-6 pt-2">
+            <a href="#reserve" class="w-full py-2.5 bg-savora-cream border border-savora-border rounded-xl text-xs font-bold uppercase tracking-wider text-savora-dark hover:bg-savora-dark hover:text-white transition flex items-center justify-center gap-1">
+              Order at Table ➔
+            </a>
+          </div>
+        </div>
+
+        <!-- Plate 3: Short Ribs -->
+        <div class="bg-white rounded-3xl overflow-hidden border border-savora-border shadow-sm hover:shadow-xl transition-all duration-500 group flex flex-col justify-between" data-cursor="view">
+          <div>
+            <div class="aspect-[4/3] overflow-hidden bg-stone-200 relative">
+              <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80" alt="Oak-Smoked Short Ribs" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <span class="absolute top-4 left-4 bg-savora-dark/90 text-white font-mono text-[10px] uppercase tracking-wider px-3 py-1 rounded-full backdrop-blur-sm">
+                12-Hour Smoke
+              </span>
+            </div>
+            <div class="p-6 space-y-2">
+              <div class="flex justify-between items-baseline">
+                <h3 class="font-serif text-xl font-bold text-savora-dark group-hover:text-savora-accent transition">Oak-Smoked Short Ribs</h3>
+                <span class="font-mono text-sm font-bold text-savora-accent">₹890</span>
+              </div>
+              <p class="text-xs text-savora-ink leading-relaxed">Slow-smoked over seasoned oak logs for 12 hours, served with celery root purée and charred spring onions.</p>
+            </div>
+          </div>
+          <div class="px-6 pb-6 pt-2">
+            <a href="#reserve" class="w-full py-2.5 bg-savora-cream border border-savora-border rounded-xl text-xs font-bold uppercase tracking-wider text-savora-dark hover:bg-savora-dark hover:text-white transition flex items-center justify-center gap-1">
+              Order at Table ➔
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 3: TONIGHT AT SAVORA (Interactive Menu with Hover Preview)
+       ========================================================= -->
+  <section id="menu" class="py-24 sm:py-32 bg-savora-cream text-savora-dark border-t border-savora-border relative z-10">
+    <div class="max-w-6xl mx-auto px-6">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-2">
+        <span class="font-mono text-xs uppercase tracking-widest text-savora-accent font-bold">03 // The Menu</span>
+        <h2 class="font-serif text-3xl sm:text-5xl font-normal tracking-tight text-savora-dark">
+          Tonight at Ember & Oak
+        </h2>
+        <p class="text-savora-ink text-xs sm:text-sm">
+          Our menu changes with the micro-seasons. Here is a taste of what is on the pass this week.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        
+        <!-- Left 2 Menu Columns -->
+        <div class="lg:col-span-8 space-y-12">
+          
+          <!-- Starters & Hearth Bites -->
+          <div class="space-y-6">
+            <div class="flex items-center justify-between pb-3 border-b-2 border-savora-dark">
+              <h3 class="font-serif text-2xl font-bold">Starters & Hearth Bites</h3>
+              <span class="font-mono text-xs text-savora-inkLight uppercase">01 — 04</span>
+            </div>
+
+            <div class="space-y-4">
+              <div class="group p-3 rounded-2xl hover:bg-savora-surface transition duration-300" onmouseenter="swapMenuPreview('https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=80')">
+                <div class="flex justify-between items-baseline">
+                  <h4 class="font-serif text-lg font-bold group-hover:text-savora-accent transition">Skillet Greens & Whipped Ricotta</h4>
+                  <span class="font-mono text-sm font-bold text-savora-accent">₹380</span>
+                </div>
+                <p class="text-xs text-savora-inkLight mt-1">Wild field greens, garlic confit, house sheep's milk ricotta, charred sourdough.</p>
+              </div>
+
+              <div class="group p-3 rounded-2xl hover:bg-savora-surface transition duration-300" onmouseenter="swapMenuPreview('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80')">
+                <div class="flex justify-between items-baseline">
+                  <h4 class="font-serif text-lg font-bold group-hover:text-savora-accent transition">Roasted Pumpkin Velouté</h4>
+                  <span class="font-mono text-sm font-bold text-savora-accent">₹340</span>
+                </div>
+                <p class="text-xs text-savora-inkLight mt-1">Wood-roasted butternut squash, brown butter sage, toasted pepitas, crème fraîche.</p>
+              </div>
+
+              <div class="group p-3 rounded-2xl hover:bg-savora-surface transition duration-300" onmouseenter="swapMenuPreview('https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?auto=format&fit=crop&w=1200&q=80')">
+                <div class="flex justify-between items-baseline">
+                  <h4 class="font-serif text-lg font-bold group-hover:text-savora-accent transition">Garden Leaves & Stone Fruit</h4>
+                  <span class="font-mono text-sm font-bold text-savora-accent">₹390</span>
+                </div>
+                <p class="text-xs text-savora-inkLight mt-1">Bitter chicories, grilled peaches, candied walnuts, aged balsamic reduction.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mains & Hearth Roasts -->
+          <div class="space-y-6">
+            <div class="flex items-center justify-between pb-3 border-b-2 border-savora-dark">
+              <h3 class="font-serif text-2xl font-bold">Mains & Wood-Fired Roasts</h3>
+              <span class="font-mono text-xs text-savora-inkLight uppercase">05 — 08</span>
+            </div>
+
+            <div class="space-y-4">
+              <div class="group p-3 rounded-2xl hover:bg-savora-surface transition duration-300" onmouseenter="swapMenuPreview('https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=1200&q=80')">
+                <div class="flex justify-between items-baseline">
+                  <h4 class="font-serif text-lg font-bold group-hover:text-savora-accent transition">Fire-Roasted Salmon <span class="text-xs font-mono font-normal text-savora-accent ml-2">Signature</span></h4>
+                  <span class="font-mono text-sm font-bold text-savora-accent">₹820</span>
+                </div>
+                <p class="text-xs text-savora-inkLight mt-1">Oak embers, charred fennel bulb, leek purée, citrus vinaigrette.</p>
+              </div>
+
+              <div class="group p-3 rounded-2xl hover:bg-savora-surface transition duration-300" onmouseenter="swapMenuPreview('https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=1200&q=80')">
+                <div class="flex justify-between items-baseline">
+                  <h4 class="font-serif text-lg font-bold group-hover:text-savora-accent transition">Hand-Cut Tagliatelle</h4>
+                  <span class="font-mono text-sm font-bold text-savora-accent">₹690</span>
+                </div>
+                <p class="text-xs text-savora-inkLight mt-1">Rolled fresh hourly, wild chanterelles, sage butter, 24-month parmesan.</p>
+              </div>
+
+              <div class="group p-3 rounded-2xl hover:bg-savora-surface transition duration-300" onmouseenter="swapMenuPreview('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80')">
+                <div class="flex justify-between items-baseline">
+                  <h4 class="font-serif text-lg font-bold group-hover:text-savora-accent transition">Oak-Smoked Short Ribs <span class="text-xs font-mono font-normal text-savora-accent ml-2">Signature</span></h4>
+                  <span class="font-mono text-sm font-bold text-savora-accent">₹890</span>
+                </div>
+                <p class="text-xs text-savora-inkLight mt-1">12-hour smoke, celery root mash, bone marrow reduction.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Interactive Floating Dish Preview Card -->
+        <div class="lg:col-span-4 sticky top-28 hidden lg:block">
+          <div class="bg-savora-surface rounded-3xl p-4 border border-savora-border shadow-xl space-y-4">
+            <div class="aspect-[4/5] rounded-2xl overflow-hidden bg-stone-300 relative">
+              <img id="menuPreviewImg" src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=80" alt="Dish preview" class="w-full h-full object-cover transition-opacity duration-300">
+            </div>
+            <div class="p-2 text-center">
+              <p class="font-serif text-sm font-bold text-savora-dark">Plated fresh on the pass</p>
+              <p class="text-[11px] text-savora-inkLight">Hover any dish on the left to preview.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-14 text-center">
+        <a href="#reserve" class="inline-flex px-8 py-4 bg-savora-accent text-white font-bold text-xs uppercase tracking-wider rounded-full hover:bg-savora-accentDark transition shadow-md" data-cursor="book">
+          View full seasonal dinner menu
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 4: MEET THE CHEF & ROASTER (Deep Forest Olive Theme)
+       ========================================================= -->
+  <section id="chef" class="py-24 sm:py-32 bg-savora-olive text-white relative z-10 overflow-hidden">
+    <div class="max-w-6xl mx-auto px-6 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        
+        <!-- Left Image of Chef / Hearth -->
+        <div class="lg:col-span-5 relative">
+          <div class="relative mx-auto max-w-sm">
+            <div class="aspect-[4/5] rounded-3xl overflow-hidden border-4 border-white/20 shadow-2xl bg-savora-oliveDark">
+              <img src="https://images.unsplash.com/photo-1581299894007-aaa50297cf16?auto=format&fit=crop&w=1000&q=80" alt="Chef Marco Ruiz" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute -bottom-6 -right-6 w-36 aspect-square rounded-2xl overflow-hidden border-4 border-white/20 shadow-xl hidden sm:block">
+              <img src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?auto=format&fit=crop&w=800&q=80" alt="Kitchen prep" class="w-full h-full object-cover">
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Chef Story -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="font-mono text-xs uppercase tracking-widest text-amber-300 font-bold">
+            04 // Meet the Chef & Master Roaster
+          </div>
+
+          <h2 class="font-serif text-3xl sm:text-5xl font-normal tracking-tight text-white leading-tight">
+            “Fire is honest. It rewards patience and punishes shortcuts — I try to cook the same way.”
+          </h2>
+
+          <div class="space-y-1">
+            <p class="font-serif text-xl font-bold text-amber-200">Marco Ruiz & Head Roastery Team</p>
+            <p class="font-mono text-xs text-stone-300">Executive Chef & Co-founder</p>
+          </div>
+
+          <p class="text-stone-300 text-sm leading-relaxed max-w-xl">
+            Trained in San Sebastián and Lyon, Marco returned to build a dining room centered on an open wood-fired hearth and single-origin coffee roasting. Every dish and pour-over is designed around the alchemy of heat, smoke, and natural fermentation.
+          </p>
+
+          <div class="pt-4 flex items-center gap-4">
+            <a href="#reserve" class="px-6 py-3 bg-white text-savora-olive font-bold text-xs uppercase tracking-wider rounded-full hover:bg-amber-100 transition shadow-lg" data-cursor="book">
+              Reserve Chef's Counter
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 5: TESTIMONIALS (What Our Guests Say)
+       ========================================================= -->
+  <section class="py-24 bg-savora-cream text-savora-dark border-t border-savora-border relative z-10">
+    <div class="max-w-4xl mx-auto px-6 text-center space-y-6">
+      
+      <span class="font-mono text-xs uppercase tracking-widest text-savora-accent font-bold">05 // Kind Words</span>
+      
+      <p class="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-savora-dark leading-snug">
+        “The short ribs and estate pour-overs alone are worth the trip. Warm service, a beautiful wood-fired room, and a natural wine list full of surprises.”
+      </p>
+
+      <div class="pt-4 flex flex-col items-center justify-center space-y-1">
+        <p class="font-bold text-savora-dark">Sophie Laurent</p>
+        <p class="text-xs text-savora-inkLight font-mono">Food Writer, The Weekly Table</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 6: GALLERY (Inside Ember & Oak)
+       ========================================================= -->
+  <section id="gallery" class="py-24 bg-savora-surface border-t border-savora-border relative z-10">
+    <div class="max-w-6xl mx-auto px-6">
+      
+      <div class="flex items-end justify-between mb-12">
+        <div>
+          <span class="font-mono text-xs uppercase tracking-widest text-savora-accent font-bold">06 // Gallery</span>
+          <h2 class="font-serif text-3xl sm:text-4xl font-normal text-savora-dark mt-1">Inside Ember & Oak</h2>
+        </div>
+        <p class="font-mono text-xs text-savora-inkLight hidden sm:block">A glance into our wood-fired room.</p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+        <div class="aspect-square rounded-2xl overflow-hidden shadow-sm group" data-cursor="view">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80" alt="Culinary art" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+        </div>
+        <div class="aspect-square rounded-2xl overflow-hidden shadow-sm group" data-cursor="view">
+          <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=1200&q=80" alt="Garden patio" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+        </div>
+        <div class="aspect-square rounded-2xl overflow-hidden shadow-sm group" data-cursor="view">
+          <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80" alt="Wine cellar" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+        </div>
+        <div class="aspect-square rounded-2xl overflow-hidden shadow-sm group" data-cursor="view">
+          <img src="https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=1200&q=80" alt="Fire roasted dish" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+        </div>
+        <div class="aspect-square rounded-2xl overflow-hidden shadow-sm group" data-cursor="view">
+          <img src="https://images.unsplash.com/photo-1537047902294-62a40c20a6ae?auto=format&fit=crop&w=1200&q=80" alt="Evening dining room" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+        </div>
+        <div class="aspect-square rounded-2xl overflow-hidden shadow-sm group" data-cursor="view">
+          <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1200&q=80" alt="Sommelier service" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 7: VISIT US (Find Your Way to the Table & Map)
+       ========================================================= -->
+  <section id="visit" class="py-24 bg-savora-cream text-savora-dark border-t border-savora-border relative z-10">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <div class="lg:col-span-6 space-y-6">
+          <span class="font-mono text-xs uppercase tracking-widest text-savora-accent font-bold">07 // Visit Us</span>
+          <h2 class="font-serif text-3xl sm:text-5xl font-normal tracking-tight text-savora-dark">
+            Find your way to the table.
+          </h2>
+          <p class="text-savora-ink text-sm leading-relaxed max-w-md">
+            We keep a few tables for walk-ins every night, but we recommend booking — especially on weekends.
+          </p>
+
+          <div class="space-y-4 pt-2 font-mono text-xs">
+            <div class="flex justify-between pb-2 border-b border-savora-border">
+              <span class="text-savora-inkLight">Monday</span>
+              <span class="font-bold text-savora-accent">Closed (Roasting day)</span>
+            </div>
+            <div class="flex justify-between pb-2 border-b border-savora-border">
+              <span class="text-savora-inkLight">Tue — Thu</span>
+              <span class="font-bold">5:30 pm — 10:30 pm</span>
+            </div>
+            <div class="flex justify-between pb-2 border-b border-savora-border">
+              <span class="text-savora-inkLight">Fri — Sat</span>
+              <span class="font-bold">5:00 pm — 11:30 pm</span>
+            </div>
+            <div class="flex justify-between pb-2 border-b border-savora-border">
+              <span class="text-savora-inkLight">Sunday Brunch</span>
+              <span class="font-bold">10:30 am — 3:00 pm</span>
+            </div>
+          </div>
+
+          <div class="pt-4 text-xs space-y-1">
+            <p class="font-bold text-savora-dark">Ember & Oak Kitchen & Roastery</p>
+            <p class="text-savora-inkLight">Plot 42, Off Link Road, Lokhandwala, Andheri West, Mumbai</p>
+          </div>
+        </div>
+
+        <!-- Stylized Map Visual Card -->
+        <div class="lg:col-span-6">
+          <div class="rounded-3xl overflow-hidden border-2 border-savora-border shadow-2xl bg-stone-100 aspect-[4/3] relative flex items-center justify-center">
+            <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80" alt="Map area" class="w-full h-full object-cover filter brightness-95 contrast-95">
+            <div class="absolute inset-0 bg-savora-dark/30 backdrop-blur-[1px] flex items-center justify-center p-6 text-center">
+              <div class="bg-white/95 p-6 rounded-2xl shadow-xl max-w-xs space-y-2">
+                <p class="font-serif font-bold text-savora-dark text-base">Ember & Oak Mumbai</p>
+                <p class="text-xs text-stone-600">Off Link Road, Andheri West</p>
+                <a href="https://maps.google.com" target="_blank" class="inline-block mt-2 px-5 py-2 bg-savora-dark text-white rounded-full text-xs font-bold uppercase tracking-wider hover:bg-savora-accent transition">
+                  Get Directions ↗
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION 8: RESERVATIONS (Save Your Seat by the Fire)
+       ========================================================= -->
+  <section id="reserve" class="py-24 sm:py-32 bg-savora-darkDeep text-white relative z-10 border-t border-stone-800">
+    <div class="max-w-4xl mx-auto px-6 text-center space-y-6">
+      
+      <span class="font-mono text-xs uppercase tracking-widest text-savora-accent font-bold">08 // Reservations</span>
+
+      <h2 class="font-serif text-4xl sm:text-6xl font-normal tracking-tight text-white">
+        Save your seat by the fire.
+      </h2>
+
+      <p class="text-stone-300 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+        Book online in less than a minute, or contact us for groups of more than eight, chef's table tastings, and private events.
+      </p>
+
+      <div class="pt-6 max-w-xl mx-auto bg-stone-900/90 border border-stone-800 p-8 rounded-3xl shadow-2xl text-left space-y-4">
+        <form onsubmit="handleEmberBooking(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-mono text-[11px] uppercase text-stone-400 mb-1">Your Name</label>
+              <input type="text" id="savName" required placeholder="Sophie Laurent" class="w-full bg-stone-800 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-savora-accent">
+            </div>
+            <div>
+              <label class="block font-mono text-[11px] uppercase text-stone-400 mb-1">Mobile / WhatsApp</label>
+              <input type="tel" id="savPhone" required placeholder="+91 98200 12345" class="w-full bg-stone-800 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-savora-accent">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-mono text-[11px] uppercase text-stone-400 mb-1">Party Size</label>
+              <select id="savGuests" class="w-full bg-stone-800 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-savora-accent">
+                <option value="2 Guests">2 Guests (Dining)</option>
+                <option value="4 Guests" selected>4 Guests (Hearth Table)</option>
+                <option value="6-8 Guests">6 - 8 Guests (Chef's Counter)</option>
+                <option value="9+ Guests">9+ Guests (Private Room)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-mono text-[11px] uppercase text-stone-400 mb-1">Date & Time</label>
+              <input type="datetime-local" id="savTime" required class="w-full bg-stone-800 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-savora-accent">
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-4 bg-savora-accent text-white font-bold text-xs uppercase tracking-widest rounded-full hover:bg-savora-accentDark transition duration-200 shadow-xl" data-cursor="book">
+            Confirm Booking via WhatsApp ➔
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       FOOTER (Forest Olive & Savora Branding)
+       ========================================================= -->
+  <footer class="py-16 bg-savora-olive text-stone-300 text-xs border-t border-white/10 relative z-10">
+    <div class="max-w-6xl mx-auto px-6 space-y-12">
+      
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-12 border-b border-white/10">
+        <div>
+          <h3 class="font-serif text-2xl font-bold text-white">Ember & Oak</h3>
+          <p class="text-xs text-stone-300 mt-1">Wood-fired kitchen & single-origin coffee lab.</p>
+        </div>
+        <div class="flex items-center space-x-6 font-mono text-xs text-stone-200">
+          <a href="#story" class="hover:text-white">Our Story</a>
+          <a href="#dishes" class="hover:text-white">Dishes</a>
+          <a href="#menu" class="hover:text-white">Menu</a>
+          <a href="#chef" class="hover:text-white">Chef</a>
+          <a href="#visit" class="hover:text-white">Hours</a>
+          <a href="#reserve" class="hover:text-white">Reserve</a>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-stone-400 text-[11px]">
+        <p>© 2026 Ember & Oak Restaurant Group. All rights reserved.</p>
+        <p class="font-mono">Open Wood Hearth · Natural Wines · Specialty Coffee</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initNavbarController();
+      initStickyBackgroundFading();
+      initScrollReveals();
+      initTravelingCup();
+      initCursorFollow();
+    });
+
+    // =========================================================
+    // 🧭 ADAPTIVE DYNAMIC NAVBAR & MOBILE DRAWER CONTROLLER
+    // =========================================================
+    function initNavbarController() {
+      const header = document.getElementById('mainHeader');
+      const headerContainer = document.getElementById('headerContainer');
+      const switcher = document.getElementById('templateSwitcherBar');
+      const navBrandLogo = document.getElementById('navBrandLogo');
+      const navLinks = document.querySelectorAll('#navLinks .nav-item');
+      const mobileToggle = document.getElementById('mobileNavToggle');
+      const mobileDrawer = document.getElementById('mobileDrawer');
+      const hamburgerIcon = document.getElementById('hamburgerIcon');
+      const closeIcon = document.getElementById('closeIcon');
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+      let drawerOpen = false;
+      function toggleDrawer(open) {
+        drawerOpen = typeof open === 'boolean' ? open : !drawerOpen;
+        if (drawerOpen) {
+          mobileDrawer.classList.remove('hidden');
+          hamburgerIcon.classList.add('hidden');
+          closeIcon.classList.remove('hidden');
+        } else {
+          mobileDrawer.classList.add('hidden');
+          hamburgerIcon.classList.remove('hidden');
+          closeIcon.classList.add('hidden');
+        }
+      }
+
+      if (mobileToggle) {
+        mobileToggle.addEventListener('click', () => toggleDrawer());
+      }
+
+      mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => toggleDrawer(false));
+      });
+
+      // Dark sections: heroSection, chef, reserve
+      const darkSections = ['heroSection', 'chef', 'reserve'];
+
+      function updateNavbar() {
+        const scrollY = window.scrollY || window.pageYOffset;
+        const switcherH = switcher ? switcher.offsetHeight : 0;
+
+        // 1. Dynamic Top Alignment:
+        // When scrollY < switcherH, header sits right below switcherBar
+        // As you scroll past switcherH, header smoothly docks flush at top: 0px!
+        const topOffset = Math.max(0, switcherH - scrollY);
+        header.style.top = topOffset + 'px';
+
+        const isScrolled = scrollY > 25;
+
+        if (!isScrolled && !drawerOpen) {
+          // Top Hero State: Transparent & crisp white
+          header.className = 'fixed inset-x-0 z-40 transition-all duration-300 border-b border-transparent bg-transparent text-white';
+          headerContainer.classList.remove('h-16');
+          headerContainer.classList.add('h-20');
+          if (navBrandLogo) navBrandLogo.className = 'group inline-flex items-center gap-3 font-serif text-2xl font-bold tracking-tight text-white hover:text-savora-accent transition';
+          navLinks.forEach(l => {
+            l.className = 'nav-item text-stone-200 hover:text-savora-accent transition py-1';
+          });
+          if (mobileToggle) mobileToggle.className = 'md:hidden p-2 rounded-xl border border-white/30 text-white focus:outline-none';
+          if (mobileDrawer) mobileDrawer.className = 'hidden md:hidden border-t border-white/10 bg-[#1C140E]/95 backdrop-blur-xl text-white px-6 py-6 space-y-4 shadow-xl';
+          return;
+        }
+
+        // Scrolled State: Compact height (h-16)
+        headerContainer.classList.remove('h-20');
+        headerContainer.classList.add('h-16');
+
+        // Check if header is over a dark section
+        const headerHeight = 64;
+        const probeY = topOffset + headerHeight / 2;
+
+        let isOverDark = false;
+        for (const secId of darkSections) {
+          const el = document.getElementById(secId);
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            if (rect.top <= probeY && rect.bottom >= probeY) {
+              isOverDark = true;
+              break;
+            }
+          }
+        }
+
+        if (isOverDark) {
+          // Dark Section (Hero, Chef, Reserve): Woodsmoke Frosted Glass
+          header.className = 'fixed inset-x-0 z-40 transition-all duration-300 border-b border-stone-800/80 bg-[#1C140E]/92 backdrop-blur-xl text-white shadow-lg';
+          if (navBrandLogo) navBrandLogo.className = 'group inline-flex items-center gap-3 font-serif text-2xl font-bold tracking-tight text-white hover:text-savora-accent transition';
+          navLinks.forEach(l => {
+            l.className = 'nav-item text-stone-200 hover:text-savora-accent transition py-1';
+          });
+          if (mobileToggle) mobileToggle.className = 'md:hidden p-2 rounded-xl border border-stone-700 text-white focus:outline-none';
+          if (mobileDrawer) mobileDrawer.className = (drawerOpen ? 'block' : 'hidden') + ' md:hidden border-t border-stone-800 bg-[#1C140E]/98 backdrop-blur-xl text-white px-6 py-6 space-y-4 shadow-xl';
+        } else {
+          // Light Section (Story, Dishes, Menu, Gallery, Visit): Cream Frosted Glass with Dark Ink Text
+          header.className = 'fixed inset-x-0 z-40 transition-all duration-300 border-b border-[#EDE5D8] bg-[#F7F1E8]/95 backdrop-blur-xl text-[#1C140E] shadow-sm';
+          if (navBrandLogo) navBrandLogo.className = 'group inline-flex items-center gap-3 font-serif text-2xl font-bold tracking-tight text-[#1C140E] hover:text-savora-accent transition';
+          navLinks.forEach(l => {
+            l.className = 'nav-item text-stone-800 hover:text-savora-accent font-semibold transition py-1';
+          });
+          if (mobileToggle) mobileToggle.className = 'md:hidden p-2 rounded-xl border border-stone-300 text-stone-900 focus:outline-none';
+          if (mobileDrawer) mobileDrawer.className = (drawerOpen ? 'block' : 'hidden') + ' md:hidden border-t border-[#EDE5D8] bg-[#F7F1E8]/98 backdrop-blur-xl text-[#1C140E] px-6 py-6 space-y-4 shadow-xl';
+        }
+      }
+
+      window.addEventListener('scroll', updateNavbar, { passive: true });
+      window.addEventListener('resize', updateNavbar, { passive: true });
+      updateNavbar();
+    }
+
+    // =========================================================
+    // 🌌 STICKY BACKGROUND FADING CONTROLLER
+    // =========================================================
+    function initStickyBackgroundFading() {
+      const hero = document.getElementById('heroSection');
+      const chef = document.getElementById('chef');
+      const reserve = document.getElementById('reserve');
+
+      const bgHero = document.getElementById('bgLayerHero');
+      const bgOlive = document.getElementById('bgLayerOlive');
+      const bgFire = document.getElementById('bgLayerFire');
+
+      function checkBackgroundState() {
+        const scrollY = window.scrollY;
+        const vh = window.innerHeight;
+
+        const chefRect = chef.getBoundingClientRect();
+        const reserveRect = reserve.getBoundingClientRect();
+
+        // If user is inside the chef section (Forest Olive)
+        if (chefRect.top <= vh * 0.6 && chefRect.bottom >= vh * 0.2) {
+          bgHero.classList.remove('active');
+          bgFire.classList.remove('active');
+          bgOlive.classList.add('active');
+        } 
+        // If user is inside the reservations section (Fire glow)
+        else if (reserveRect.top <= vh * 0.7) {
+          bgHero.classList.remove('active');
+          bgOlive.classList.remove('active');
+          bgFire.classList.add('active');
+        }
+        // Top hero section
+        else if (scrollY < vh * 1.2) {
+          bgOlive.classList.remove('active');
+          bgFire.classList.remove('active');
+          bgHero.classList.add('active');
+        }
+        // Neutral middle sections
+        else {
+          bgHero.classList.remove('active');
+          bgOlive.classList.remove('active');
+          bgFire.classList.remove('active');
+        }
+      }
+
+      window.addEventListener('scroll', checkBackgroundState, { passive: true });
+      checkBackgroundState();
+    }
+
+    // =========================================================
+    // 📜 SCROLL REVEAL (IntersectionObserver)
+    // =========================================================
+    function initScrollReveals() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('.reveal, #story, #dishes, #menu, #chef, #visit').forEach(el => {
+        el.classList.add('reveal');
+        observer.observe(el);
+      });
+    }
+
+    // =========================================================
+    // 🍽️ MENU IMAGE PREVIEW SWAPPER
+    // =========================================================
+    function swapMenuPreview(url) {
+      const img = document.getElementById('menuPreviewImg');
+      if (img && img.src !== url) {
+        img.style.opacity = '0';
+        setTimeout(() => {
+          img.src = url;
+          img.style.opacity = '1';
+        }, 120);
+      }
+    }
+
+    // =========================================================
+    // ☕ TRAVELING 3D COFFEE CUP
+    // =========================================================
+    function initTravelingCup() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const wrapper = document.getElementById('travelingCupWrapper');
+      if (!wrapper) return;
+      wrapper.classList.remove('opacity-0');
+
+      const bean1 = document.getElementById('cupBean1');
+      const bean2 = document.getElementById('cupBean2');
+      const bean3 = document.getElementById('cupBean3');
+
+      const milestones = [
+        { sectionId: 'heroSection', xPct: 75, yPct: 32, rotate: 0,   scale: 1.0 },
+        { sectionId: 'story',       xPct: 18, yPct: 46, rotate: -25, scale: 0.95 },
+        { sectionId: 'dishes',      xPct: 82, yPct: 40, rotate: 22,  scale: 0.92 },
+        { sectionId: 'chef',        xPct: 50, yPct: 52, rotate: 360, scale: 1.25 },
+        { sectionId: 'visit',       xPct: 80, yPct: 44, rotate: 345, scale: 0.92 },
+        { sectionId: 'reserve',     xPct: 74, yPct: 62, rotate: 720, scale: 0.98 }
+      ];
+
+      const s = { cX: 75, cY: 32, cRot: 0, cScale: 1.0, tX: 75, tY: 32, tRot: 0, tScale: 1.0 };
+
+      function update() {
+        const sy = window.scrollY, vh = window.innerHeight;
+        const center = sy + vh * 0.45;
+        const pos = milestones.map(m => {
+          const el = document.getElementById(m.sectionId);
+          if (!el) return { ...m, center: 0 };
+          const r = el.getBoundingClientRect();
+          return { ...m, center: r.top + sy + r.height / 2 };
+        });
+
+        let idx = 0, prog = 0;
+        for (let i = 0; i < pos.length - 1; i++) {
+          if (center >= pos[i].center && center <= pos[i+1].center) {
+            idx = i;
+            prog = (center - pos[i].center) / (pos[i+1].center - pos[i].center);
+            break;
+          } else if (center > pos[i+1].center) {
+            idx = i + 1; prog = 0;
+          }
+        }
+        prog = Math.max(0, Math.min(1, prog));
+        const ease = prog * prog * (3 - 2 * prog);
+
+        const from = pos[idx], to = pos[Math.min(idx + 1, pos.length - 1)];
+        s.tX = from.xPct + (to.xPct - from.xPct) * ease;
+        s.tY = from.yPct + (to.yPct - from.yPct) * ease;
+        s.tRot = from.rotate + (to.rotate - from.rotate) * ease;
+        s.tScale = from.scale + (to.scale - from.scale) * ease;
+
+        if (window.innerWidth < 768) {
+          s.tX = Math.max(20, Math.min(78, s.tX));
+          s.tY = Math.max(22, Math.min(76, s.tY));
+          s.tScale *= 0.72;
+        }
+      }
+
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update, { passive: true });
+      update();
+
+      let st = performance.now();
+      function loop(t) {
+        const el = t - st;
+        s.cX += (s.tX - s.cX) * 0.11;
+        s.cY += (s.tY - s.cY) * 0.11;
+        s.cRot += (s.tRot - s.cRot) * 0.11;
+        s.cScale += (s.tScale - s.cScale) * 0.11;
+
+        const fy = Math.sin(el * 0.0022) * 7;
+        const px = (s.cX * window.innerWidth) / 100 - (wrapper.offsetWidth / 2);
+        const py = (s.cY * window.innerHeight) / 100 - (wrapper.offsetHeight / 2) + fy;
+
+        wrapper.style.transform = `translate3d(${px}px, ${py}px, 0) scale(${s.cScale}) rotate(${s.cRot}deg)`;
+
+        if (bean1) bean1.style.transform = `translate(${Math.cos(el * 0.002) * 14}px, ${Math.sin(el * 0.002) * 14}px) rotate(${s.cRot * -1.2}deg)`;
+        if (bean2) bean2.style.transform = `translate(${Math.sin(el * 0.0016) * 18}px, ${Math.cos(el * 0.0016) * 18}px) rotate(${s.cRot * 1.5}deg)`;
+        if (bean3) bean3.style.transform = `translate(${-Math.cos(el * 0.0024) * 12}px, ${Math.sin(el * 0.0024) * 12}px) rotate(${s.cRot * -0.9}deg)`;
+
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    }
+
+    // =========================================================
+    // 🎯 SMOOTH FOLLOW CURSOR
+    // =========================================================
+    function initCursorFollow() {
+      if (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const dot = document.getElementById('cursorDot');
+      const ring = document.getElementById('cursorRing');
+      const label = document.getElementById('cursorLabel');
+
+      let m = { x: -100, y: -100 }, r = { x: -100, y: -100 }, vis = false;
+
+      window.addEventListener('mousemove', (e) => {
+        m.x = e.clientX; m.y = e.clientY;
+        dot.style.transform = `translate(${m.x}px, ${m.y}px) translate(-50%, -50%)`;
+        if (!vis) { vis = true; dot.classList.remove('opacity-0'); ring.classList.remove('opacity-0'); }
+      });
+
+      document.addEventListener('mouseleave', () => { vis = false; dot.classList.add('opacity-0'); ring.classList.add('opacity-0'); });
+
+      function loop() {
+        if (vis) {
+          r.x += (m.x - r.x) * 0.16; r.y += (m.y - r.y) * 0.16;
+          ring.style.transform = `translate(${r.x}px, ${r.y}px) translate(-50%, -50%)`;
+        }
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+
+      document.querySelectorAll('a, button, select, input, [data-cursor]').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          const type = el.getAttribute('data-cursor');
+          if (type === 'view') { ring.classList.add('hover-view'); label.textContent = 'TASTE'; label.classList.remove('opacity-0'); }
+          else if (type === 'book') { ring.classList.add('hover-view'); label.textContent = 'TABLE'; label.classList.remove('opacity-0'); }
+          else { ring.classList.add('hover-interactive'); label.classList.add('opacity-0'); }
+        });
+        el.addEventListener('mouseleave', () => {
+          ring.classList.remove('hover-interactive', 'hover-view');
+          label.classList.add('opacity-0');
+        });
+      });
+    }
+
+    // Booking Submission
+    function handleEmberBooking(e) {
+      e.preventDefault();
+      const n = document.getElementById('savName').value;
+      const p = document.getElementById('savPhone').value;
+      const g = document.getElementById('savGuests').value;
+      const t = document.getElementById('savTime').value;
+
+      const msg = `🪵 Ember & Oak Wood-Fired Table Booking:\n• Name: ${n}\n• Contact: ${p}\n• Guests: ${g}\n• Time: ${t.replace('T', ' at ')}`;
+      const encoded = encodeURIComponent(msg);
+      window.open(`https://wa.me/919820012345?text=${encoded}`, '_blank');
+    }
+  </script>
+
+</body>
+</html>
