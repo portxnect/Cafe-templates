@@ -241,36 +241,6 @@
   </div>
 
   <!-- =========================================================
-       UNIVERSAL TEMPLATE SUITE TOP BAR
-       ========================================================= -->
-  <aside id="templateSwitcherBar" aria-label="Template Showcase Bar" class="bg-savora-darkDeep text-white text-xs py-2.5 px-4 border-b border-stone-800 z-50 relative">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-2">
-        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span class="font-mono font-bold uppercase tracking-wider text-savora-accent text-[11px]">Template Suite:</span>
-        <span class="text-stone-300 hidden sm:inline text-[11px]">Explore 5 specialized cafe & restaurant designs:</span>
-      </div>
-      <div class="flex flex-wrap items-center gap-2">
-        <a href="template-cafe-free-india.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
-          🍔 Cafe Free India
-        </a>
-        <a href="template-golden-roast.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
-          ⭐ Golden Roast
-        </a>
-        <a href="template-ember-oak.html" class="px-3.5 py-1 bg-savora-accent text-white font-bold rounded-full text-[11px] shadow-sm flex items-center gap-1">
-          <span>🪵</span> Ember & Oak (Active)
-        </a>
-        <a href="template-mokai-cafe.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
-          ☕ Mokai Cafe
-        </a>
-        <a href="template-leaping-windows.html" class="px-3 py-1 bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white rounded-full text-[11px] transition">
-          📚 Leaping Windows
-        </a>
-      </div>
-    </div>
-  </aside>
-
-  <!-- =========================================================
        FLOATING TRAVELING 3D COFFEE CUP & SCROLLYTELLING
        ========================================================= -->
   <aside id="travelingCupStage" aria-hidden="true">
@@ -977,7 +947,6 @@
     function initNavbarController() {
       const header = document.getElementById('mainHeader');
       const headerContainer = document.getElementById('headerContainer');
-      const switcher = document.getElementById('templateSwitcherBar');
       const navBrandLogo = document.getElementById('navBrandLogo');
       const navLinks = document.querySelectorAll('#navLinks .nav-item');
       const mobileToggle = document.getElementById('mobileNavToggle');
@@ -1013,13 +982,7 @@
 
       function updateNavbar() {
         const scrollY = window.scrollY || window.pageYOffset;
-        const switcherH = switcher ? switcher.offsetHeight : 0;
-
-        // 1. Dynamic Top Alignment:
-        // When scrollY < switcherH, header sits right below switcherBar
-        // As you scroll past switcherH, header smoothly docks flush at top: 0px!
-        const topOffset = Math.max(0, switcherH - scrollY);
-        header.style.top = topOffset + 'px';
+        header.style.top = '0px';
 
         const isScrolled = scrollY > 25;
 
