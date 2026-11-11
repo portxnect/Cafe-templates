@@ -1181,15 +1181,16 @@
         s.tScale = from.scale + (to.scale - from.scale) * ease;
 
         if (window.innerWidth < 768) {
-          s.tX = Math.max(20, Math.min(78, s.tX));
-          s.tY = Math.max(22, Math.min(76, s.tY));
-          s.tScale *= 0.72;
+          s.tX = 78;
+          s.tY = Math.max(78, Math.min(86, s.tY + 48));
+          s.tScale *= 0.6;
         }
       }
 
       window.addEventListener('scroll', update, { passive: true });
       window.addEventListener('resize', update, { passive: true });
       update();
+      s.cX = s.tX; s.cY = s.tY; s.cRot = s.tRot; s.cScale = s.tScale;
 
       let st = performance.now();
       function loop(t) {
